@@ -1,0 +1,24 @@
+---
+import { profile } from '../data/profile';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <p class="footer-name">{profile.name}</p>
+      <p class="muted">{profile.role} · {profile.location}</p>
+    </div>
+    <ul class="footer-links">
+      <li><a href={profile.github} rel="noopener noreferrer" target="_blank">GitHub</a></li>
+      <li><a href={profile.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+      <li><a href={`mailto:${profile.email}`}>Email</a></li>
+      {profile.portfolioRepo && <li><a href={profile.portfolioRepo} rel="noopener noreferrer" target="_blank">Site source</a></li>}
+    </ul>
+    <p class="footer-note muted">
+      © {year} {profile.name}. Independent personal portfolio, statically hosted on AWS Amplify Hosting. AWS and
+      Microsoft product and credential names are used only to describe services and certifications; no affiliation or
+      endorsement is implied.
+    </p>
+  </div>
+</footer>

@@ -1,0 +1,46 @@
+---
+import { profile } from '../data/profile';
+
+const base = Astro.url.pathname === '/' ? '' : '/';
+const links = [
+  { href: `${base}#top`, label: 'Home', stage: 'top' },
+  { href: `${base}#about`, label: 'About', stage: 'about' },
+  { href: `${base}#skills`, label: 'Skills', stage: 'skills' },
+  { href: `${base}#experience`, label: 'Experience', stage: 'experience' },
+  { href: `${base}#projects`, label: 'Projects', stage: 'projects' },
+  { href: `${base}#contact`, label: 'Contact', stage: 'contact' },
+  { href: '/projects/', label: 'All projects', stage: 'all-projects' },
+];
+const [first, ...rest] = profile.name.split(' ');
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={`${base}#top`}>{first}<span class="brand-accent">{rest.join(' ')}</span></a>
+
+    <nav class="primary-nav" aria-label="Primary" id="primary-nav">
+      <ul>
+        {links.map((l) => <li><a href={l.href} data-nav={l.stage}>{l.label}</a></li>)}
+      </ul>
+      <span class="nav-indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="header-tools">
+      <span class="status-badge" id="status-badge" role="status" aria-live="polite" data-state="ok">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="status-text">All systems operational</span>
+      </span>
+      <button type="button" class="chaos-trigger" id="chaos-trigger" aria-controls="chaos-console" aria-expanded="false" aria-label="Break production: open the Chaos Mode simulation">
+        <span aria-hidden="true">⚡</span><span class="chaos-label">Break production</span>
+      </button>
+      <button type="button" class="icon-btn" id="theme-toggle" aria-label="Switch to light theme">
+        <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="icon-btn menu-btn" id="menu-btn" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+</header>

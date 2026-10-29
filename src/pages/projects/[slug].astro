@@ -1,0 +1,126 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import ArchDiagram from '../../components/ArchDiagram.astro';
+import { getPublishedProjects, STATUS_LABEL, DOMAIN_LABEL } from '../../data/taxonomy';
+import { profile } from '../../data/profile';
+
+export const getStaticPaths = (async () => {
+  const projects = await getPublishedProjects();
+  const withCase = projects.filter((p) => p.data.caseStudy);
+  return withCase.map((p, i) => ({
+    params: { slug: p.id },
+    props: { project: p, next: withCase[(i + 1) % withCase.length] },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project, next } = Astro.props;
+const p = project.data;
+const cs = p.caseStudy!;
+const repoBase = p.links.repo;
+
+const blocks = [
+  { id: 'decisions', title: 'Engineering decisions', items: cs.decisions },
+  { id: 'security', title: 'Security', items: cs.security },
+  { id: 'deployment', title: 'Deployment workflow', items: cs.deployment },
+];
+---
+
+<Base title={`${p.name} · Case study · ${profile.name}`} description={p.summary}>
+  <article class="case">
+    <header class="case-hero">
+      <div class="container">
+        <p class="kicker mono" data-reveal><a href="/">home</a> / <a href="/projects/">projects</a> / {project.id}</p>
+        <div class="case-status" data-reveal>
+          <span class={`status status--${p.status}`}>{STATUS_LABEL[p.status]}</span>
+          {p.event && <span class="project-event">{p.event}</span>}
+        </div>
+        <h1 class="page-title" data-reveal>{p.name}</h1>
+        <p class="case-summary" data-reveal>{p.summary}</p>
+        {p.statusNote && <p class="case-note" data-reveal><span class="mono">status</span> {p.statusNote}</p>}
+        <div class="case-links" data-reveal>
+          {p.links.repo && <a class="btn btn-primary" href={p.links.repo} rel="noopener noreferrer" target="_blank">Repository</a>}
+          {p.links.demo && <a class="btn" href={p.links.demo} rel="noopener noreferrer" target="_blank">Live demo</a>}
+          {p.links.video && <a class="btn" href={p.links.video} rel="noopener noreferrer" target="_blank">Video</a>}
+          {p.links.docs && <a class="btn" href={p.links.docs} rel="noopener noreferrer" target="_blank">Docs</a>}
+        </div>
+        <ul class="tag-row case-tags" data-reveal aria-label="Engineering areas">
+          {p.domains.map((d) => <li class="tag tag--domain">{DOMAIN_LABEL[d]}</li>)}
+        </ul>
+      </div>
+    </header>
+
+    <div class="container case-body">
+      <aside class="case-aside" data-reveal>
+        <nav class="case-toc" aria-label="On this page">
+          <p class="mono muted">on this page</p>
+          <ul>
+            <li><a href="#problem">Problem</a></li>
+            {cs.architecture && <li><a href="#architecture">Architecture</a></li>}
+            <li><a href="#decisions">Decisions</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="#deployment">Deployment</a></li>
+            <li><a href="#results">Results</a></li>
+          </ul>
+        </nav>
+        <div class="case-stack">
+          <p class="mono muted">stack</p>
+          <ul class="tag-row">{p.stack.map((s) => <li class="tag">{s}</li>)}</ul>
+        </div>
+      </aside>
+
+      <div class="case-main">
+        <section id="problem" class="case-section" data-reveal>
+          <h2>Problem</h2>
+          <p>{cs.problem}</p>
+          <h3>Approach</h3>
+          <ol class="case-steps">{cs.approach.map((a) => <li>{a}</li>)}</ol>
+        </section>
+
+        {cs.architecture && (
+          <section id="architecture" class="case-section" data-reveal>
+            <h2>Architecture</h2>
+            <ArchDiagram id={project.id} {...cs.architecture} />
+          </section>
+        )}
+
+        {blocks.map((b) => (
+          <section id={b.id} class="case-section" data-reveal>
+            <h2>{b.title}</h2>
+            <ul class="case-list">{b.items.map((i) => <li>{i}</li>)}</ul>
+          </section>
+        ))}
+
+        <section id="results" class="case-section" data-reveal>
+          <h2>Results</h2>
+          {cs.results.length > 0 ? (
+            <ul class="case-results">
+              {cs.results.map((r) => (
+                <li class="card">
+                  <p>{r.text}</p>
+                  <p class="mono muted source">source: {repoBase ? <a href={`${repoBase}/blob/HEAD/${r.source}`} rel="noopener noreferrer" target="_blank">{r.source}</a> : r.source}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="muted">No measured results are published for this project yet, so none are claimed here.</p>
+          )}
+          {cs.limitations.length > 0 && (
+            <>
+              <h3>Known limitations</h3>
+              <ul class="case-list">{cs.limitations.map((l) => <li>{l}</li>)}</ul>
+            </>
+          )}
+          <p class="case-sources mono muted">Written from the repository's {cs.sources.join(', ')}.</p>
+        </section>
+
+        {next && next.id !== project.id && (
+          <a class="case-next card" href={`/projects/${next.id}/`} data-cursor="next">
+            <span class="mono muted">next case study</span>
+            <span class="case-next-name">{next.data.name}</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </article>
+</Base>

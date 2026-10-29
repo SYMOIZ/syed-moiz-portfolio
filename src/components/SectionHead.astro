@@ -1,0 +1,16 @@
+---
+interface Props {
+  kicker: string;
+  title: string;
+  lede?: string;
+  as?: 'h1' | 'h2';
+}
+const { kicker, title, lede, as: Tag = 'h2' } = Astro.props;
+---
+
+<header class="section-head" data-reveal>
+  <p class="kicker">{kicker}</p>
+  <Tag class="section-title">{title}</Tag>
+  <span class="section-divider" aria-hidden="true"></span>
+  {lede && <p class="section-lede">{lede}</p>}
+</header>

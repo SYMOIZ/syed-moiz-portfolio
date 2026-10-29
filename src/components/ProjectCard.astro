@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ProjectThumb from './ProjectThumb.astro';
+import { STATUS_LABEL } from '../data/taxonomy';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const p = project.data;
+const caseHref = p.caseStudy ? `/projects/${project.id}/` : undefined;
+const stack = p.stack.slice(0, 4);
+const more = p.stack.length - stack.length;
+---
+
+<article class="card project-card lift" data-reveal data-domains={p.domains.join(' ')} data-i={index}>
+  <ProjectThumb project={project} />
+  <div class="project-body">
+    <div class="project-top">
+      <span class={`status status--${p.status}`}>{STATUS_LABEL[p.status]}</span>
+      {p.event && <span class="project-event">{p.event}</span>}
+    </div>
+    <h3 class="project-title">
+      {caseHref ? <a href={caseHref} class="stretched">{p.name}</a> : p.name}
+    </h3>
+    <p class="project-summary">{p.summary}</p>
+    {stack.length > 0 && (
+      <ul class="tag-row" aria-label="Technologies">
+        {stack.map((s) => <li class="tag">{s}</li>)}
+        {more > 0 && <li class="tag tag--more">+{more}</li>}
+      </ul>
+    )}
+    <div class="project-links">
+      {caseHref && <a class="link-arrow" href={caseHref}>Case study</a>}
+      {p.links.repo && <a class="link-ext" href={p.links.repo} rel="noopener noreferrer" target="_blank">Repository</a>}
+      {p.links.demo && <a class="link-ext" href={p.links.demo} rel="noopener noreferrer" target="_blank">Live demo</a>}
+      {p.links.video && <a class="link-ext" href={p.links.video} rel="noopener noreferrer" target="_blank">Video</a>}
+      {p.links.docs && <a class="link-ext" href={p.links.docs} rel="noopener noreferrer" target="_blank">Docs</a>}
+    </div>
+  </div>
+</article>

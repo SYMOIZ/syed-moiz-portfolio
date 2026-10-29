@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getPublishedProjects, DOMAIN_LABEL } from '../../data/taxonomy';
+import { profile } from '../../data/profile';
+
+const projects = await getPublishedProjects();
+const used = new Set(projects.flatMap((p) => p.data.domains));
+const filters = (Object.keys(DOMAIN_LABEL) as (keyof typeof DOMAIN_LABEL)[]).filter((d) => used.has(d));
+const groups = [
+  { tier: 'featured', title: 'Featured case studies', size: 'md' },
+  { tier: 'secondary', title: 'More cloud builds', size: 'sm' },
+  { tier: 'archive', title: 'Archive and other work', size: 'sm' },
+] as const;
+---
+
+<Base
+  title={`Projects · ${profile.name}`}
+  description={`All public projects by ${profile.name}: DevOps, reliability, AWS infrastructure, plus earlier data-engineering work. Filter by engineering area.`}
+>
+  <section class="section page-top" data-stage="all-projects">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker mono"><a href="/">home</a> / projects</p>
+        <h1 class="page-title">Projects</h1>
+        <p class="section-lede">
+          {projects.length} public projects. DevOps and cloud infrastructure work comes first; data-engineering pipelines
+          and earlier experiments are kept in the archive. Each card shows its real status.
+        </p>
+      </header>
+
+      <div class="filter-bar" role="group" aria-label="Filter projects by engineering area" data-reveal>
+        <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+        {filters.map((d) => (
+          <button type="button" class="chip" data-filter={d} aria-pressed="false">{DOMAIN_LABEL[d]}</button>
+        ))}
+      </div>
+      <p class="filter-count muted mono" id="filter-count" aria-live="polite">{projects.length} projects shown</p>
+
+      {groups.map((g) => {
+        const list = projects.filter((p) => p.data.tier === g.tier);
+        return list.length > 0 && (
+          <section class="project-group" data-group aria-labelledby={`group-${g.tier}`}>
+            <h2 class="sub-head" id={`group-${g.tier}`}>{g.title}</h2>
+            <div class="project-grid">
+              {list.map((p, i) => <ProjectCard project={p} index={i} />)}
+            </div>
+          </section>
+        );
+      })}
+      <p class="filter-empty muted" id="filter-empty" hidden>No projects in this area yet.</p>
+    </div>
+  </section>
+</Base>

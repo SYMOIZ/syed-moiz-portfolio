@@ -1,0 +1,100 @@
+---
+// Interactive architecture diagram rendered from project data.
+// Hover, focus or tap a node to highlight its connections and read its role.
+interface Node {
+  id: string;
+  label: string;
+  kind: string;
+  col: number;
+  row: number;
+  note: string;
+}
+interface Edge {
+  from: string;
+  to: string;
+  label?: string;
+}
+interface Props {
+  caption: string;
+  nodes: Node[];
+  edges: Edge[];
+  id: string;
+}
+
+const { caption, nodes, edges, id } = Astro.props;
+
+const W = 150; // node width
+const H = 46; // node height
+const GX = 210; // column pitch
+const GY = 86; // row pitch
+const PAD = 16;
+
+const cols = Math.max(...nodes.map((n) => n.col)) + 1;
+const rows = Math.max(...nodes.map((n) => n.row)) + 1;
+const width = PAD * 2 + (cols - 1) * GX + W;
+const height = PAD * 2 + (rows - 1) * GY + H;
+
+const pos = new Map(nodes.map((n) => [n.id, { x: PAD + n.col * GX, y: PAD + n.row * GY }]));
+
+const paths = edges.map((e, i) => {
+  const a = pos.get(e.from)!;
+  const b = pos.get(e.to)!;
+  let x1: number, y1: number, x2: number, y2: number;
+  if (b.x > a.x) {
+    x1 = a.x + W; y1 = a.y + H / 2; x2 = b.x; y2 = b.y + H / 2;
+  } else if (b.x < a.x) {
+    x1 = a.x; y1 = a.y + H / 2; x2 = b.x + W; y2 = b.y + H / 2;
+  } else {
+    x1 = a.x + W / 2; x2 = b.x + W / 2;
+    y1 = b.y > a.y ? a.y + H : a.y; y2 = b.y > a.y ? b.y : b.y + H;
+  }
+  const mx = (x1 + x2) / 2;
+  const d = b.x !== a.x ? `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}` : `M${x1},${y1} L${x2},${y2}`;
+  return { ...e, d, lx: mx, ly: (y1 + y2) / 2 - 6, key: `${id}-e${i}` };
+});
+---
+
+<figure class="arch" data-arch>
+  <div class="arch-scroll" tabindex="0" aria-label={`${caption} Scroll horizontally to see the full diagram.`}>
+    <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} class="arch-svg" role="group" aria-label={caption}>
+      <defs>
+        <marker id={`${id}-arrow`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" class="arch-arrowhead" />
+        </marker>
+      </defs>
+      <g class="arch-edges">
+        {paths.map((p) => (
+          <g class="arch-edge" data-from={p.from} data-to={p.to}>
+            <path d={p.d} marker-end={`url(#${id}-arrow)`} />
+            <path d={p.d} class="arch-flow" />
+            {p.label && <text x={p.lx} y={p.ly} class="arch-edge-label" text-anchor="middle">{p.label}</text>}
+          </g>
+        ))}
+      </g>
+      <g class="arch-nodes">
+        {nodes.map((n) => {
+          const { x, y } = pos.get(n.id)!;
+          return (
+            <g
+              class={`arch-node arch-node--${n.kind}`}
+              data-node={n.id}
+              data-note={n.note}
+              data-label={n.label}
+              tabindex="0"
+              role="button"
+              aria-label={`${n.label}: ${n.note}`}
+              transform={`translate(${x},${y})`}
+            >
+              <rect width={W} height={H} rx="10" />
+              <text x={W / 2} y={H / 2 + 4} text-anchor="middle">{n.label}</text>
+            </g>
+          );
+        })}
+      </g>
+    </svg>
+  </div>
+  <figcaption>
+    <p class="arch-caption">{caption}</p>
+    <p class="arch-note" aria-live="polite"><strong data-arch-title>Select a component</strong> <span data-arch-text>to see what it does.</span></p>
+  </figcaption>
+</figure>

@@ -1,0 +1,98 @@
+---
+// "How I work": an illustrative delivery-and-operations loop. Each stage links to where the
+// practice actually appears in a project. It is not a live pipeline and shows no live data.
+const stages = [
+  {
+    id: 'provision',
+    label: 'Provision',
+    text: 'Describe infrastructure as code and keep every network path deliberate.',
+    evidence: [
+      { label: 'CloudFormation stack for queues, IAM, EC2 and CloudFront', href: '/projects/dlq-judge/' },
+      { label: 'One security group per role, VPN-only SSH', href: '/projects/aws-3tier-architecture/' },
+    ],
+  },
+  {
+    id: 'build',
+    label: 'Build & test',
+    text: 'Lint, test and package on every change so broken builds never reach a deploy.',
+    evidence: [
+      { label: 'Ruff, pytest and a Lambda package smoke build in CI', href: '/projects/infrapilot-ai/' },
+      { label: 'Pure detection engine with unit tests', href: '/projects/incidentlens/' },
+    ],
+  },
+  {
+    id: 'secure',
+    label: 'Secure',
+    text: 'No long-lived keys, least-privilege roles, and secrets masked before they travel.',
+    evidence: [
+      { label: 'GitHub OIDC deploy role, no stored AWS keys', href: '/projects/infrapilot-ai/' },
+      { label: 'Secret redaction before any model call', href: '/projects/errorsaathi/' },
+    ],
+  },
+  {
+    id: 'deploy',
+    label: 'Deploy',
+    text: 'Ship small, repeatable releases with a safe default and an explicit switch to mutate.',
+    evidence: [
+      { label: 'App installed through SSM Run Command, no SSH', href: '/projects/dlq-judge/' },
+      { label: 'This site: every Git push triggers an Amplify Hosting build', href: '' },
+    ],
+  },
+  {
+    id: 'observe',
+    label: 'Observe',
+    text: 'Turn logs and metrics into a few clear signals instead of a wall of noise.',
+    evidence: [
+      { label: 'Error-rate baselines and deduped incidents', href: '/projects/incidentlens/' },
+    ],
+  },
+  {
+    id: 'respond',
+    label: 'Respond',
+    text: 'Automate the safe responses, escalate the uncertain ones, and keep a human in the loop.',
+    evidence: [
+      { label: 'Confidence-gated DLQ triage with escalation', href: '/projects/dlq-judge/' },
+      { label: 'CI failure diagnosis with risk-labelled fixes', href: '/projects/errorsaathi/' },
+    ],
+  },
+];
+---
+
+<div class="operate" data-operate>
+  <div class="operate-track" role="tablist" aria-label="Delivery and operations stages">
+    <span class="operate-pulse" aria-hidden="true"></span>
+    {stages.map((s, i) => (
+      <button
+        type="button"
+        role="tab"
+        class="operate-stage"
+        id={`op-tab-${s.id}`}
+        aria-controls={`op-panel-${s.id}`}
+        aria-selected={i === 0 ? 'true' : 'false'}
+        tabindex={i === 0 ? 0 : -1}
+        data-stage-index={i}
+      >
+        <span class="operate-dot" aria-hidden="true"></span>
+        <span class="operate-num mono">{String(i + 1).padStart(2, '0')}</span>
+        <span class="operate-label">{s.label}</span>
+      </button>
+    ))}
+  </div>
+
+  {stages.map((s, i) => (
+    <div
+      class="operate-panel card"
+      role="tabpanel"
+      id={`op-panel-${s.id}`}
+      aria-labelledby={`op-tab-${s.id}`}
+      hidden={i !== 0}
+    >
+      <p class="operate-text">{s.text}</p>
+      <p class="operate-ev-title mono">Where this shows up</p>
+      <ul class="operate-evidence">
+        {s.evidence.map((e) => <li>{e.href ? <a href={e.href} class="link-arrow">{e.label}</a> : <span class="link-plain">{e.label}</span>}</li>)}
+      </ul>
+    </div>
+  ))}
+  <p class="operate-disclaimer muted">Illustrative workflow. The links show where each practice appears in my own projects; nothing here is live data.</p>
+</div>

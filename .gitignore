@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+test-results/
+playwright-report/
+.env
+.env.*
+.DS_Store
+
+# Private working notes and original photos (optimised copies live in src/assets/images)
+Picture/
+PORTFOLIO_CONTENT_AUDIT.md

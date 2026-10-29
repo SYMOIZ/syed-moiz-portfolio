@@ -1,0 +1,79 @@
+---
+// Chaos Mode: a non-modal on-call console. It never blocks the page:
+// the rest of the site stays scrollable and clickable while it is open.
+---
+
+<aside
+  id="chaos-console"
+  class="chaos-console"
+  aria-labelledby="chaos-heading"
+  hidden
+>
+  <div class="cc-head">
+    <div>
+      <p class="mono cc-kicker">on-call console</p>
+      <h2 id="chaos-heading">Chaos Mode</h2>
+    </div>
+    <div class="cc-head-actions">
+      <span class="mono cc-score" id="cc-score">0/3 resolved</span>
+      <button type="button" class="icon-btn" id="cc-close" aria-label="Resolve and exit Chaos Mode (Esc)">✕</button>
+    </div>
+  </div>
+
+  <!-- Step 1: pick a scenario -->
+  <div class="cc-view" id="cc-pick">
+    <p>Pick an incident to inject. Each one breaks the portfolio in a different (simulated) way.</p>
+    <ul class="scenario-list" id="cc-scenarios"></ul>
+  </div>
+
+  <!-- Step 2: the live incident -->
+  <div class="cc-view" id="cc-incident" hidden>
+    <div class="alert-card" id="cc-alert" role="alert"></div>
+
+    <div class="metric-row">
+      <div class="metric"><span class="metric-label">Error rate</span><span class="metric-value mono" id="m-errors">0.2%</span></div>
+      <div class="metric"><span class="metric-label">p99 latency</span><span class="metric-value mono" id="m-latency">120 ms</span></div>
+      <div class="metric"><span class="metric-label">CPU</span><span class="metric-value mono" id="m-cpu">22%</span></div>
+      <div class="metric"><span class="metric-label">MTTR</span><span class="metric-value mono" id="m-clock">00:00</span></div>
+    </div>
+
+    <figure class="chart">
+      <figcaption class="mono" id="cc-chart-label">error rate (%) · last 60s</figcaption>
+      <svg viewBox="0 0 300 80" preserveAspectRatio="none" role="img" aria-labelledby="cc-chart-label">
+        <line class="chart-threshold" id="cc-threshold" x1="0" x2="300" y1="40" y2="40" />
+        <polyline class="chart-line" id="cc-line" points="" />
+      </svg>
+    </figure>
+
+    <div class="terminal" id="cc-terminal">
+      <ol class="term-log mono" id="cc-log" aria-live="polite" aria-relevant="additions"></ol>
+      <form class="term-input" id="cc-form" autocomplete="off">
+        <label for="cc-cmd" class="mono prompt">oncall@prod:~$</label>
+        <input id="cc-cmd" name="cmd" class="mono" type="text" spellcheck="false" autocapitalize="off" placeholder="type help" />
+      </form>
+    </div>
+
+    <div class="quick-cmds" aria-label="Suggested commands">
+      <button type="button" data-cmd="help">help</button>
+      <button type="button" data-cmd="logs">logs</button>
+      <button type="button" data-cmd="deploys">deploys</button>
+      <button type="button" data-cmd="top">top</button>
+      <button type="button" data-cmd="hint">hint</button>
+    </div>
+    <button type="button" class="link-btn" id="cc-reveal">Stuck? Show me the fix</button>
+  </div>
+
+  <!-- Step 3: postmortem -->
+  <div class="cc-view" id="cc-postmortem" hidden>
+    <div class="postmortem" id="cc-pm"></div>
+    <div class="pm-actions">
+      <button type="button" class="btn btn-primary" id="cc-next">Next incident</button>
+      <button type="button" class="btn" id="cc-done">Back to the portfolio</button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  import { initChaos } from '../scripts/chaos';
+  initChaos();
+</script>

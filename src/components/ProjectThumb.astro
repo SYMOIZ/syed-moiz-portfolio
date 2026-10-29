@@ -1,0 +1,78 @@
+---
+// Card image for a project. Uses the project's own architecture diagram when it has one;
+// otherwise draws a tile pattern derived from its id and engineering areas. No invented screenshots.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const arch = project.data.caseStudy?.architecture;
+
+const KIND_CLASS: Record<string, string> = {
+  entry: 'k-info',
+  decision: 'k-warn',
+  store: 'k-ok',
+  external: 'k-ext',
+  action: 'k-ok',
+  actor: 'k-ext',
+  compute: 'k-base',
+};
+
+let diagram: { w: number; h: number; nodes: { x: number; y: number; cls: string }[]; edges: string[] } | null = null;
+if (arch) {
+  const NW = 70;
+  const NH = 26;
+  const GX = 96;
+  const GY = 44;
+  const pos = new Map(arch.nodes.map((n) => [n.id, { x: 14 + n.col * GX, y: 14 + n.row * GY }]));
+  diagram = {
+    w: 28 + Math.max(...arch.nodes.map((n) => n.col)) * GX + NW,
+    h: 28 + Math.max(...arch.nodes.map((n) => n.row)) * GY + NH,
+    nodes: arch.nodes.map((n) => ({ ...pos.get(n.id)!, cls: KIND_CLASS[n.kind] ?? 'k-base' })),
+    edges: arch.edges.map((e) => {
+      const a = pos.get(e.from)!;
+      const b = pos.get(e.to)!;
+      const x1 = a.x + NW / 2;
+      const y1 = a.y + NH / 2;
+      const x2 = b.x + NW / 2;
+      const y2 = b.y + NH / 2;
+      const mx = (x1 + x2) / 2;
+      return `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`;
+    }),
+  };
+}
+
+// Deterministic tile pattern for projects without a diagram.
+let seed = [...project.id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
+const rand = () => ((seed = (seed * 1103515245 + 12345) >>> 0) / 2 ** 32);
+const classes = ['k-ok', 'k-info', 'k-warn', 'k-base', 'k-base', 'k-base'];
+const tiles = Array.from({ length: 6 * 4 }, (_, i) => ({
+  x: (i % 6) * 34 + 16,
+  y: Math.floor(i / 6) * 34 + 12,
+  cls: rand() < 0.28 ? classes[Math.floor(rand() * 3)] : 'k-dim',
+}));
+const initials = project.data.name
+  .split(/\s+/)
+  .filter((w) => /[A-Za-z0-9]/.test(w[0]))
+  .slice(0, 2)
+  .map((w) => w[0].toUpperCase())
+  .join('');
+---
+
+<div class="thumb" aria-hidden="true">
+  {diagram ? (
+    <svg viewBox={`0 0 ${diagram.w} ${diagram.h}`} preserveAspectRatio="xMidYMid meet" class="thumb-svg">
+      <g class="thumb-edges">{diagram.edges.map((d) => <path d={d} />)}</g>
+      <g class="thumb-nodes">{diagram.nodes.map((n) => <rect x={n.x} y={n.y} width="70" height="26" rx="6" class={n.cls} />)}</g>
+    </svg>
+  ) : (
+    <svg viewBox="0 0 220 148" preserveAspectRatio="xMidYMid slice" class="thumb-svg">
+      <g class="thumb-tiles" transform="skewX(-18) translate(30 0)">
+        {tiles.map((t) => <rect x={t.x} y={t.y} width="28" height="28" rx="4" class={t.cls} />)}
+      </g>
+      <text x="196" y="132" text-anchor="end" class="thumb-initials">{initials}</text>
+    </svg>
+  )}
+</div>

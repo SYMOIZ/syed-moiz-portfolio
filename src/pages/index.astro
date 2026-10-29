@@ -1,0 +1,298 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import OperateFlow from '../components/OperateFlow.astro';
+import SectionHead from '../components/SectionHead.astro';
+import hero from '../assets/images/hero-podium.png';
+import portrait from '../assets/images/portrait.png';
+import { getPublishedProjects } from '../data/taxonomy';
+import {
+  profile,
+  about,
+  principles,
+  capabilities,
+  skillGroups,
+  experience,
+  certifications,
+  community,
+  publications,
+  education,
+} from '../data/profile';
+
+const projects = await getPublishedProjects();
+const carousel = projects.filter((p) => p.data.tier !== 'archive');
+const archiveCount = projects.length - carousel.length;
+const byId = new Map(projects.map((p) => [p.id, p]));
+const [first, ...rest] = profile.name.split(' ');
+
+const ICONS: Record<string, string> = {
+  Cloud: 'M7 18a4 4 0 0 1-.6-7.96A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9H7z',
+  Automation: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0-5v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M5.6 18.4l2.1-2.1m8.6-8.6 2.1-2.1',
+  Containers: 'M3 7l9-4 9 4-9 4-9-4zm0 5l9 4 9-4M3 17l9 4 9-4',
+  Systems: 'M4 5h16v11H4zM8 20h8M12 16v4M7 9l3 2-3 2m5 0h4',
+  Languages: 'M9 7l-5 5 5 5m6-10 5 5-5 5',
+  'Data platforms': 'M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zm0 0v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
+};
+
+const socials = [
+  { label: 'GitHub', handle: '@SYMOIZ', href: profile.github, icon: 'M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z' },
+  { label: 'LinkedIn', handle: 'in/symoiz', href: profile.linkedin, icon: 'M4 9h3v11H4zM5.5 4a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6zM10 9h2.9v1.5c.4-.8 1.4-1.7 3-1.7 3.1 0 3.6 2 3.6 4.7V20h-3v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H10z' },
+  { label: 'Email', handle: profile.email, href: `mailto:${profile.email}`, icon: 'M3 6h18v12H3zM3 7l9 6 9-6' },
+];
+---
+
+<Base
+  title={`${profile.name} · ${profile.role}`}
+  description={`${profile.name}, ${profile.role} in ${profile.location}. AWS infrastructure, CI/CD, infrastructure automation and reliability engineering, with case studies.`}
+>
+  <!-- HERO -->
+  <section class="hero" id="top" data-stage="top">
+    <div class="hero-bg" aria-hidden="true">
+      <Picture
+        src={hero}
+        formats={['avif', 'webp']}
+        widths={[768, 1280, 1672]}
+        sizes="100vw"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        class="hero-img"
+      />
+      <canvas id="hero-ripple" class="hero-ripple"></canvas>
+      <div class="hero-shade"></div>
+    </div>
+
+    <div class="container hero-center">
+      <div class="hero-card glass" data-reveal>
+        <p class="hero-hello">Hello, I am</p>
+        <h1 class="hero-name">{first} <span class="accent">{rest.join(' ')}</span></h1>
+        <span class="hero-rule" aria-hidden="true"></span>
+        <p class="hero-role">
+          <span class="visually-hidden">{profile.roles.join(', ')}</span>
+          <span class="typed" id="typed" data-roles={JSON.stringify(profile.roles)} aria-hidden="true">{profile.roles[0]}</span>
+        </p>
+        <p class="hero-value">{profile.valueLine}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View my work</a>
+          {profile.resume && <a class="btn btn-outline" href={profile.resume} download>Download CV</a>}
+          <a class="btn btn-outline" href="#contact">Let's connect</a>
+        </div>
+        <button type="button" class="chaos-hint" data-chaos-open>
+          <span class="chaos-hint-dot" aria-hidden="true"></span>
+          This portfolio is on call. <strong>Try breaking production</strong> <span class="muted">(simulation)</span>
+        </button>
+      </div>
+    </div>
+
+    <a class="scroll-mouse" href="#about" aria-label="Scroll to About">
+      <span class="scroll-mouse-body" aria-hidden="true"><span></span></span>
+      <span class="scroll-mouse-label" aria-hidden="true">Scroll</span>
+    </a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about" data-section="about" data-stage="about">
+    <div class="container">
+      <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
+      <SectionHead kicker="Who I am" title="About me" />
+      <div class="about-grid">
+        <div class="about-photo card lift" data-reveal>
+          <Picture src={portrait} formats={['avif', 'webp']} widths={[480, 800]} sizes="(max-width: 900px) 92vw, 420px" alt={`Portrait of ${profile.name}`} class="about-img" />
+        </div>
+        <div class="prose" data-reveal>
+          {about.map((p) => <p>{p}</p>)}
+          <p class="now"><span class="now-label">Now</span> {profile.now}</p>
+        </div>
+      </div>
+      <ul class="principles">
+        {principles.map((p, i) => (
+          <li class="card lift principle" data-reveal data-i={i}>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FIND ME ONLINE -->
+  <section class="section section-alt" id="social" data-stage="about">
+    <div class="container">
+      <SectionHead kicker="Let's connect" title="Find me online" />
+      <ul class="social-grid">
+        {socials.map((s, i) => (
+          <li data-reveal data-i={i}>
+            <a class="card lift social-card" href={s.href} {...(s.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+              <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" class="social-icon"><path d={s.icon} /></svg>
+              <span class="social-label">{s.label}</span>
+              <span class="social-handle">{s.handle}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section class="section" id="certifications" data-stage="about">
+    <div class="container">
+      <SectionHead kicker="Credentials and recognition" title="Certifications" />
+      <ul class="cert-grid">
+        {certifications.map((c, i) => (
+          <li class="card lift cert-card" data-reveal data-i={i}>
+            <span class="cert-issuer">{c.issuer}</span>
+            <h3 class="cert-name">{c.name}</h3>
+            <p class="cert-date">{c.date}</p>
+            {c.verify ? (
+              <a class="btn btn-outline btn-sm" href={c.verify} rel="noopener noreferrer" target="_blank" aria-label={`Verify ${c.name}`}>Verify</a>
+            ) : (
+              <span class="cert-pending">Verification link pending</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section section-alt" id="skills" data-section="skills" data-stage="skills">
+    <div class="container">
+      <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
+      <SectionHead kicker="What I do" title="Skills & tech superpowers" />
+      <ul class="skill-grid">
+        {skillGroups.map((g, i) => (
+          <li class="card lift skill-card" data-reveal data-i={i}>
+            <span class="skill-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26"><path d={ICONS[g.name]} /></svg>
+            </span>
+            <h3>{g.name}</h3>
+            <ul class="tag-row tag-row--center">{g.skills.map((s) => <li class="tag">{s}</li>)}</ul>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="sub-head" data-reveal>Where each capability is proven</h3>
+      <ul class="capability-list" data-reveal>
+        {capabilities.map((c) => (
+          <li class="capability">
+            <span class:list={['cap-signal', c.projects.length ? 'cap-signal--ok' : 'cap-signal--gap']} aria-hidden="true"></span>
+            <span class="cap-area">{c.area}</span>
+            <span class="cap-evidence">
+              {c.projects.length ? (
+                c.projects.map((id) => {
+                  const p = byId.get(id);
+                  if (!p) return null;
+                  const href = p.data.caseStudy ? `/projects/${p.id}/` : p.data.links.repo;
+                  return href ? <a href={href}>{p.data.name}</a> : <span>{p.data.name}</span>;
+                })
+              ) : (
+                <span class="muted">No public project yet</span>
+              )}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- HOW I WORK -->
+  <section class="section" id="operate" data-stage="skills">
+    <div class="container">
+      <SectionHead kicker="How I work" title="From commit to calm production" />
+      <div data-reveal><OperateFlow /></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE & EDUCATION -->
+  <section class="section section-alt" id="experience" data-stage="experience">
+    <div class="container">
+      <SectionHead kicker="My résumé" title="Experience & education" />
+      <div class="resume-grid">
+        <div>
+          <h3 class="resume-col-title" data-reveal>Experience</h3>
+          <ol class="timeline">
+            {experience.map((x, i) => (
+              <li class="card lift timeline-card" data-reveal data-i={i}>
+                <span class="timeline-period">{x.period}</span>
+                <h4>{x.role}</h4>
+                <p class="timeline-org">{x.org}</p>
+                <ul class="timeline-points">{x.points.map((pt) => <li>{pt}</li>)}</ul>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <h3 class="resume-col-title" data-reveal>Education</h3>
+          <ol class="timeline">
+            {education.map((e, i) => (
+              <li class="card lift timeline-card" data-reveal data-i={i}>
+                <h4>{e.degree}</h4>
+                <p class="timeline-org">{e.school}</p>
+              </li>
+            ))}
+          </ol>
+          <h3 class="resume-col-title" id="community" data-reveal>Community</h3>
+          <ol class="timeline">
+            {community.map((c, i) => (
+              <li class="card lift timeline-card" data-reveal data-i={i}>
+                <span class="timeline-period">{c.period}</span>
+                <h4>{c.title}</h4>
+                <p class="timeline-text">{c.text}</p>
+              </li>
+            ))}
+          </ol>
+          <h3 class="resume-col-title" data-reveal>Research</h3>
+          <ol class="timeline">
+            {publications.map((p, i) => (
+              <li class="card lift timeline-card" data-reveal data-i={i}>
+                <span class="timeline-period">{p.venue} · {p.date}</span>
+                <h4>{p.url ? <a href={p.url} rel="noopener noreferrer" target="_blank">{p.title}</a> : p.title}</h4>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projects" data-section="projects" data-stage="projects">
+    <div class="container">
+      <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
+      <SectionHead kicker="Achievements" title="My projects" lede="DevOps, reliability and AWS infrastructure work. Every card shows the project's real status." />
+      <div class="carousel" data-carousel data-reveal>
+        <div class="carousel-track" data-track role="region" aria-label="Featured projects" tabindex="0">
+          {carousel.map((p, i) => <div class="carousel-slide"><ProjectCard project={p} index={i} /></div>)}
+        </div>
+        <div class="carousel-controls">
+          <button type="button" class="carousel-btn" data-prev aria-label="Previous projects">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+          <div class="carousel-dots" data-dots></div>
+          <button type="button" class="carousel-btn" data-next aria-label="Next projects">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </button>
+        </div>
+        <p class="carousel-hint" aria-hidden="true">← Swipe or drag to see more →</p>
+      </div>
+      <p class="archive-note" data-reveal>
+        <a class="btn btn-outline" href="/projects/">Browse all {projects.length} projects</a>
+        <span class="muted">Includes {archiveCount} archived data-engineering and earlier projects.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section-alt section-contact" id="contact" data-stage="contact">
+    <div class="container">
+      <SectionHead kicker="Reach out to me" title="Contact" lede="Open to conversations about DevOps, platform engineering, cloud infrastructure and reliability." />
+      <div class="contact-actions" data-reveal>
+        <a class="btn btn-primary" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a class="btn btn-outline" href={profile.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn</a>
+        <a class="btn btn-outline" href={profile.github} rel="noopener noreferrer" target="_blank">GitHub</a>
+      </div>
+      <p class="contact-location muted" data-reveal>{profile.location}</p>
+    </div>
+  </section>
+</Base>

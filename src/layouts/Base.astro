@@ -1,0 +1,64 @@
+---
+import { Font, getImage } from 'astro:assets';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ChaosConsole from '../components/ChaosConsole.astro';
+import portrait from '../assets/images/portrait.png';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const isHome = Astro.url.pathname === '/';
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const og = await getImage({ src: portrait, width: 1200, format: 'jpeg', quality: 80 });
+const ogUrl = Astro.site ? new URL(og.src, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0b0d10" />
+    <script is:inline src="/theme-init.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {ogUrl && <meta property="og:image" content={ogUrl} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-body" preload />
+    <Font cssVariable="--font-code" />
+  </head>
+  <body class:list={[!isHome && 'page-inner']}>
+    <div class="preloader" id="preloader" aria-hidden="true">
+      <span class="preloader-mark"></span>
+    </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <canvas class="tile-field" id="tile-field" aria-hidden="true"></canvas>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <ChaosConsole />
+    <script>
+      import { initInteractions } from '../scripts/interactions';
+      import { initTileField } from '../scripts/tiles';
+      import { initRipple } from '../scripts/ripple';
+      initInteractions();
+      initTileField();
+      initRipple();
+    </script>
+  </body>
+</html>
