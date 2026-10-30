@@ -1,0 +1,16 @@
+{
+  "name": "Sukoon",
+  "tier": "archive",
+  "order": 40,
+  "status": "unconfirmed",
+  "domains": [
+    "apps"
+  ],
+  "summary": "University project (repository description: \"Sukoon\").",
+  "stack": [
+    "TypeScript"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/ai-companion-therapist"
+  }
+}

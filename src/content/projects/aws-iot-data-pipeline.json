@@ -1,0 +1,21 @@
+{
+  "name": "AWS IoT Data Pipeline",
+  "tier": "archive",
+  "order": 30,
+  "status": "unconfirmed",
+  "domains": [
+    "data",
+    "iac"
+  ],
+  "summary": "An IoT data pipeline built on AWS, provisioned with Terraform, containerised with Docker, delivered through CI/CD and monitored with CloudWatch, streaming through Kafka into Snowflake.",
+  "stack": [
+    "AWS",
+    "Terraform",
+    "Docker",
+    "CI/CD",
+    "CloudWatch",
+    "Kafka",
+    "Snowflake"
+  ],
+  "links": {}
+}

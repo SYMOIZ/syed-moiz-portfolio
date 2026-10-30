@@ -1,0 +1,16 @@
+{
+  "name": "pakwheels data scraper",
+  "tier": "archive",
+  "order": 55,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Web scraper for PakWheels vehicle listings with Streamlit dashboard for price and market trend analysis",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/pakwheels-data-scraper"
+  }
+}

@@ -1,12 +1,19 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import react from '@astrojs/react';
+import vercel from '@astrojs/vercel';
+import keystatic from '@keystatic/astro';
 
-// Fully static output: Amplify Hosting serves dist/ from its CDN.
+// Static pages served from Vercel's CDN. Only the /keystatic admin and its /api/keystatic routes run
+// on demand (as Vercel functions); /lock redirects to the admin.
 // Fonts are downloaded at build time and self-hosted, so no third-party requests at runtime.
 // security.csp emits a per-page CSP <meta> with hashes for every inline script/style Astro renders.
 export default defineConfig({
   output: 'static',
-  // Set SITE_URL in the Amplify environment once the app URL is known; it enables
+  adapter: vercel(),
+  integrations: [react(), keystatic()],
+  redirects: { '/lock': '/keystatic' },
+  // Set SITE_URL in the Vercel environment to the production URL; it enables
   // absolute canonical and social-preview URLs. Without it those tags are omitted.
   site: process.env.SITE_URL || undefined,
   trailingSlash: 'ignore',

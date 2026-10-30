@@ -1,0 +1,16 @@
+{
+  "name": "iot data migration snowflake",
+  "tier": "archive",
+  "order": 53,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Description not yet provided on GitHub.",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/iot-data-migration-snowflake"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Face Mask Detection",
+  "tier": "archive",
+  "order": 50,
+  "status": "unconfirmed",
+  "domains": [
+    "apps"
+  ],
+  "summary": "Description not yet provided on GitHub.",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/Face-Mask-Detection"
+  },
+  "unconfirmedLinks": {
+    "demo": "https://face-mask-detection-blue.vercel.app"
+  }
+}

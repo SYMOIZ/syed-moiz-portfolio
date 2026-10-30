@@ -1,0 +1,16 @@
+{
+  "name": "fmp ec2 airflow pipeline",
+  "tier": "archive",
+  "order": 51,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Financial data pipeline using FMP API, Apache Airflow, and Docker running on AWS EC2",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/fmp-ec2-airflow-pipeline"
+  }
+}

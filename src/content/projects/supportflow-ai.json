@@ -1,0 +1,26 @@
+{
+  "name": "SupportFlow AI",
+  "tier": "secondary",
+  "order": 8,
+  "status": "prototype",
+  "domains": [
+    "observability",
+    "serverless",
+    "ai-ops"
+  ],
+  "summary": "A serverless technical-support assistant on Amazon Bedrock, paired with a monitoring dashboard that reads real CloudWatch metrics for its own request volume, errors, latency and cost.",
+  "stack": [
+    "AWS Lambda",
+    "Amazon API Gateway",
+    "Amazon Bedrock (Nova Lite)",
+    "Amazon CloudWatch",
+    "AWS Amplify Hosting",
+    "JavaScript"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/SupportFlow-AI"
+  },
+  "unconfirmedLinks": {
+    "demo": "https://main.dysajj6mkqlv8.amplifyapp.com/"
+  }
+}

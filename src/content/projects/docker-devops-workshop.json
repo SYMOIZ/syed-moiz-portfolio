@@ -1,0 +1,18 @@
+{
+  "name": "Docker DevOps Workshop",
+  "tier": "archive",
+  "order": 13,
+  "status": "learning",
+  "domains": [
+    "containers"
+  ],
+  "summary": "Hands-on Docker and Docker Compose workshop covering containerisation for data engineering and DevOps workflows.",
+  "stack": [
+    "Docker",
+    "Docker Compose",
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/docker-devops-workshop"
+  }
+}

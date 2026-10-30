@@ -1,0 +1,194 @@
+{
+  "name": "ErrorSaathi",
+  "tier": "featured",
+  "order": 3,
+  "status": "hackathon",
+  "event": "Hacktoberfest 2026 · Karachi Hack Day (Harness track)",
+  "statusNote": "Built in a few hours at a hackathon. Some features are early prototypes (per its README).",
+  "domains": [
+    "ci-cd",
+    "ai-ops",
+    "security"
+  ],
+  "summary": "A CI doctor for open-source contributors. Give it a GitHub PR, a log or a screenshot and it explains what failed, why, and how to fix it in English or Roman Urdu, labelling every command SAFE, CAUTION or DESTRUCTIVE.",
+  "stack": [
+    "Python",
+    "Streamlit",
+    "Gemma 4 (Gemini API)",
+    "GitHub REST API",
+    "GitHub Actions"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/Errorsaathi-ai"
+  },
+  "caseStudy": {
+    "problem": "First-time contributors see a red CI check, face a long and cryptic log, and give up. Documentation is mostly in English, and maintainers explain the same failures again and again.",
+    "approach": [
+      "Fetch the PR, failed workflow jobs, job logs and diff from the GitHub REST API, or accept a pasted log, file or screenshot.",
+      "Clean the log, keep the lines around errors, and redact secrets before any model call.",
+      "A zero-cost regex router sends simple failures to a single fast call and complex ones through Triage, Investigator, Fixer and Safety Reviewer agents. A Blame agent maps errors to the changed file and line."
+    ],
+    "architecture": {
+      "caption": "Redaction happens before inference; posting needs explicit confirmation.",
+      "nodes": [
+        {
+          "id": "input",
+          "label": "PR / log / screenshot",
+          "kind": "actor",
+          "col": 0,
+          "row": 1,
+          "note": "GitHub PR URL, pasted log, .log or .txt upload, or an error screenshot."
+        },
+        {
+          "id": "gh",
+          "label": "GitHub API",
+          "kind": "external",
+          "col": 1,
+          "row": 0,
+          "note": "PR details, workflow runs, failed jobs, job logs and the diff."
+        },
+        {
+          "id": "pre",
+          "label": "Preprocess",
+          "kind": "compute",
+          "col": 1,
+          "row": 1,
+          "note": "Strip ANSI codes, collapse repeats, keep error windows, truncate long logs."
+        },
+        {
+          "id": "redact",
+          "label": "Redact secrets",
+          "kind": "compute",
+          "col": 2,
+          "row": 1,
+          "note": "Masks AWS keys, GitHub and GitLab tokens, JWTs, passwords, private keys, connection strings and emails."
+        },
+        {
+          "id": "router",
+          "label": "Router",
+          "kind": "decision",
+          "col": 3,
+          "row": 1,
+          "note": "Regex detection of technology and signals. No API call."
+        },
+        {
+          "id": "fast",
+          "label": "Fast mode",
+          "kind": "compute",
+          "col": 4,
+          "row": 0,
+          "note": "One Gemma call for simple failures."
+        },
+        {
+          "id": "agents",
+          "label": "Multi-agent path",
+          "kind": "compute",
+          "col": 4,
+          "row": 1,
+          "note": "Triage, Investigator, Fixer, then Safety Reviewer."
+        },
+        {
+          "id": "blame",
+          "label": "Blame agent",
+          "kind": "compute",
+          "col": 4,
+          "row": 2,
+          "note": "Correlates errors with the PR diff to suggest the file and line."
+        },
+        {
+          "id": "out",
+          "label": "Diagnosis",
+          "kind": "action",
+          "col": 5,
+          "row": 1,
+          "note": "English or Roman Urdu, with SAFE / CAUTION / DESTRUCTIVE labels."
+        },
+        {
+          "id": "confirm",
+          "label": "Confirm → PR comment",
+          "kind": "action",
+          "col": 6,
+          "row": 1,
+          "note": "Posted only after the user previews and confirms."
+        }
+      ],
+      "edges": [
+        {
+          "from": "input",
+          "to": "gh"
+        },
+        {
+          "from": "gh",
+          "to": "pre"
+        },
+        {
+          "from": "input",
+          "to": "pre"
+        },
+        {
+          "from": "pre",
+          "to": "redact"
+        },
+        {
+          "from": "redact",
+          "to": "router"
+        },
+        {
+          "from": "router",
+          "to": "fast",
+          "label": "simple"
+        },
+        {
+          "from": "router",
+          "to": "agents",
+          "label": "complex"
+        },
+        {
+          "from": "router",
+          "to": "blame",
+          "label": "PR diff"
+        },
+        {
+          "from": "fast",
+          "to": "out"
+        },
+        {
+          "from": "agents",
+          "to": "out"
+        },
+        {
+          "from": "blame",
+          "to": "out"
+        },
+        {
+          "from": "out",
+          "to": "confirm"
+        }
+      ]
+    },
+    "decisions": [
+      "A free regex router decides fast versus deep analysis before spending any model calls.",
+      "Two Gemma 4 models with automatic fallback, retries with backoff on 429 and 503, and a cache keyed on a hash of the redacted log.",
+      "Log windowing and truncation cut the tokens sent to the model."
+    ],
+    "security": [
+      "Secrets are redacted before inference.",
+      "Advise-only: the app never executes generated commands or changes infrastructure.",
+      "Destructive patterns such as rm -rf, kubectl delete and terraform destroy are flagged.",
+      "Keys live in git-ignored files; GitHub push protection and secret scanning are enabled on the repository (per README)."
+    ],
+    "deployment": [
+      "Runs with Streamlit locally; optional deploy to Streamlit Community Cloud with secrets in its settings.",
+      "A GitHub Actions workflow lives in .github/workflows/ci.yml."
+    ],
+    "results": [],
+    "limitations": [
+      "AI output can be wrong and must be reviewed.",
+      "The Blame agent may not always find the exact file and line.",
+      "Very large logs are truncated, and free-tier model quotas limit throughput."
+    ],
+    "sources": [
+      "README.md"
+    ]
+  }
+}

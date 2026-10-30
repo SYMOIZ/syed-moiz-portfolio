@@ -1,0 +1,31 @@
+{
+  "name": "AWS ResourceLens",
+  "tier": "secondary",
+  "order": 6,
+  "status": "prototype",
+  "statusNote": "MVP (per repository name).",
+  "domains": [
+    "cost",
+    "security",
+    "serverless",
+    "iac"
+  ],
+  "summary": "An AWS-native dashboard: sign in with Amazon Cognito, view inventory, estimate EC2 cost, compare spend, create EC2 with confirmation, generate reports, and optionally read another account through STS AssumeRole.",
+  "stack": [
+    "Amazon Cognito",
+    "Amazon API Gateway",
+    "AWS Lambda",
+    "Amazon DynamoDB",
+    "Amazon S3",
+    "Amazon CloudFront",
+    "AWS IAM",
+    "AWS STS",
+    "AWS Cost Explorer",
+    "AWS Price List API",
+    "Amazon Bedrock",
+    "AWS CDK"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/AWS-ResourceLens-Cognito-authenticated-AWS-dashboard-MVP"
+  }
+}

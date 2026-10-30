@@ -1,0 +1,16 @@
+{
+  "name": "retail orders analytics pipeline",
+  "tier": "archive",
+  "order": 57,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "End-to-end retail analytics pipeline: Kaggle extraction, pandas transformation, SQL Server loading, and advanced SQL analytics",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/retail-orders-analytics-pipeline"
+  }
+}

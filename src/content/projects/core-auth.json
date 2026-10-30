@@ -1,0 +1,24 @@
+{
+  "name": "Core-Auth API",
+  "tier": "secondary",
+  "order": 9,
+  "status": "unconfirmed",
+  "domains": [
+    "security",
+    "ci-cd",
+    "apps"
+  ],
+  "summary": "An async authentication service: register, login, refresh and logout with bcrypt-hashed passwords, short-lived access tokens, and a Redis blacklist that kills stolen tokens immediately. Includes a CI pipeline.",
+  "stack": [
+    "Python",
+    "FastAPI",
+    "SQLAlchemy",
+    "Redis",
+    "JWT",
+    "Alembic",
+    "GitHub Actions"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/core-auth"
+  }
+}

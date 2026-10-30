@@ -88,8 +88,8 @@ Recommended: **Billing → Budgets → Create budget** with a monthly cost budge
 
 ## 6. Updating content
 
-- Edit `src/content/projects.json` or `src/data/profile.ts`, then push. Amplify rebuilds automatically.
-- To publish a demo link you have confirmed, move it from `unconfirmedLinks` to `links` in `projects.json`.
+- Use the `/lock` admin, or edit `src/content/projects/*.json`, `src/data/certifications.json` or `src/data/profile.ts` and push. Vercel rebuilds automatically.
+- To publish a demo link you have confirmed, move it from `unconfirmedLinks` to `links`.
 
 ## Challenge submission checklist
 
@@ -98,12 +98,20 @@ Recommended: **Billing → Budgets → Create budget** with a monthly cost budge
 - [ ] Screenshots: homepage, a case study, Chaos Mode mid-incident and its postmortem, the Amplify console (app overview, build log, custom headers). Crop out account IDs and email addresses.
 - [ ] Write-up: AWS services used (Amplify Hosting with its managed CDN, plus IAM for the Amplify service role and AWS Budgets), what you learned, and the challenges you hit.
 
-## Planned: `/lock` admin dashboard (not built yet)
+## `/lock` admin (Keystatic with GitHub login)
 
-The design is agreed but not implemented. It would use Amplify Gen 2 in the same app:
+`/lock` redirects to `/keystatic`, a [Keystatic](https://keystatic.com) admin for projects and certifications. In production it signs in with GitHub and every save is a commit to `main`, which redeploys the site. Only GitHub accounts with write access to the repository can save. It needs no database, and its two routes (`/keystatic`, `/api/keystatic`) run as Vercel functions; every other page stays static.
 
-- Amazon Cognito with self sign-up turned off, an admin group and TOTP MFA.
-- DynamoDB for project records, and S3 for screenshots and diagrams, both admin-only.
-- Publishing triggers a rebuild, so unpublished projects never reach the public site.
+Locally, `npm run dev` and http://localhost:4322/keystatic edit the files on disk, with no login.
 
-It will read and write the same project fields as `projects.json`. Costs and setup will be documented when it is built.
+### One-time setup: create the GitHub App
+
+1. Run the admin locally in GitHub mode: `PUBLIC_KEYSTATIC_STORAGE=github npm run dev`, then open http://127.0.0.1:4322/keystatic.
+2. Follow the prompt to **create a GitHub App** (owner: your account). GitHub creates it and Keystatic writes its credentials to `.env` (git-ignored; never commit it).
+3. In GitHub > Settings > Developer settings > GitHub Apps > the new app:
+   - Under **Callback URL**, add `https://symoiz.vercel.app/api/keystatic/github/oauth/callback` (keep the local one).
+   - Under **Install App**, install it on `SYMOIZ/syed-moiz-portfolio` only.
+4. In Vercel > the project > Settings > Environment Variables, add these four from `.env` (Production): `KEYSTATIC_GITHUB_CLIENT_ID`, `KEYSTATIC_GITHUB_CLIENT_SECRET`, `KEYSTATIC_SECRET`, `PUBLIC_KEYSTATIC_GITHUB_APP_SLUG`. Then redeploy.
+5. Open https://symoiz.vercel.app/lock and sign in with GitHub.
+
+If a secret leaks, regenerate the client secret in the GitHub App settings and update Vercel.

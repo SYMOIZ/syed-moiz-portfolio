@@ -1,0 +1,16 @@
+{
+  "name": "End to End Data Engineering Project Python SQL",
+  "tier": "archive",
+  "order": 47,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Description not yet provided on GitHub.",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/End-to-End-Data-Engineering-Project-Python-SQL-"
+  }
+}

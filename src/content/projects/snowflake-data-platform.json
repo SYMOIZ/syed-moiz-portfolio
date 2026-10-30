@@ -1,0 +1,21 @@
+{
+  "name": "Snowflake Data Platform",
+  "tier": "archive",
+  "order": 31,
+  "status": "unconfirmed",
+  "domains": [
+    "data",
+    "iac"
+  ],
+  "summary": "A Snowflake data platform managed as code with Terraform and CloudFormation, with Git-based CI/CD and Python and SQL workloads.",
+  "stack": [
+    "Snowflake",
+    "Terraform",
+    "CloudFormation",
+    "Git",
+    "CI/CD",
+    "Python",
+    "SQL"
+  ],
+  "links": {}
+}

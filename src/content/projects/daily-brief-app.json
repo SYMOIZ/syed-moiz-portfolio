@@ -1,0 +1,25 @@
+{
+  "name": "Daily Brief App",
+  "tier": "archive",
+  "order": 12,
+  "status": "challenge",
+  "event": "AWS Builder Weekend Challenge",
+  "domains": [
+    "serverless",
+    "apps"
+  ],
+  "summary": "An AI task prioritiser with a Vite, React and TypeScript frontend and a Lambda backend on Amazon Bedrock Nova Lite.",
+  "stack": [
+    "TypeScript",
+    "React",
+    "Vite",
+    "AWS Lambda",
+    "Amazon Bedrock"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/AWS-Personal-AI-Productivity-OS"
+  },
+  "unconfirmedLinks": {
+    "demo": "https://main.dw8s3ms5ef1p5.amplifyapp.com"
+  }
+}

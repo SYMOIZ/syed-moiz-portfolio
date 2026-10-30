@@ -1,8 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import projects from '../src/content/projects.json' with { type: 'json' };
+import { readdirSync, readFileSync } from 'node:fs';
 
-const caseStudies = projects.filter((p) => 'caseStudy' in p && p.caseStudy);
+const PROJECT_DIR = 'src/content/projects';
+const projects = readdirSync(PROJECT_DIR)
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(`${PROJECT_DIR}/${f}`, 'utf8')) }));
+const caseStudies = projects.filter((p) => p.caseStudy?.problem);
 
 async function openChaos(page: Page) {
   await page.locator('#chaos-trigger').click();
@@ -101,6 +105,14 @@ test.describe('navigation', () => {
       const res = await request.get(href);
       expect(res.status(), href).toBe(200);
     }
+  });
+
+  test('/lock redirects to the admin, which asks for GitHub sign-in', async ({ page, request }) => {
+    const res = await request.get('/lock', { maxRedirects: 0 });
+    expect(res.status()).toBe(301);
+    expect(res.headers()['location']).toBe('/keystatic');
+    await page.goto('/lock');
+    await expect(page.getByText('Log in with GitHub')).toBeVisible({ timeout: 15_000 });
   });
 
   test('theme toggle switches and persists', async ({ page }) => {

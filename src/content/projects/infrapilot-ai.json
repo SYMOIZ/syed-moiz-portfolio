@@ -1,0 +1,161 @@
+{
+  "name": "InfraPilot AI",
+  "tier": "featured",
+  "order": 5,
+  "status": "prototype",
+  "statusNote": "Runs locally with clearly labelled demo data; live Bedrock mode is optional. Hosted status not confirmed.",
+  "domains": [
+    "ci-cd",
+    "serverless",
+    "security",
+    "cost",
+    "ai-ops"
+  ],
+  "summary": "AWS architecture design and review. Describe requirements or upload a diagram, get security, cost, reliability and scalability gaps with evidence, an optimised design, and Draw.io, PNG and Excel exports.",
+  "stack": [
+    "Python",
+    "FastAPI",
+    "Mangum",
+    "AWS Lambda",
+    "Amazon API Gateway",
+    "Amazon Bedrock",
+    "Amazon DynamoDB",
+    "Amazon S3",
+    "Amazon CloudFront",
+    "Amazon CloudWatch",
+    "Vite",
+    "GitHub Actions"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/InfraPilot-AI"
+  },
+  "caseStudy": {
+    "problem": "Architecture reviews are slow and inconsistent. Teams need a repeatable way to check a design for security, cost, reliability and scalability gaps before building it.",
+    "approach": [
+      "Capture business requirements, then generate an architecture with Amazon Bedrock or upload an existing Draw.io file.",
+      "A deterministic rules engine returns Pass, Fail, Warning, Unknown or Not Applicable, kept separate from AI suggestions.",
+      "Propose an optimised design and compare it with the original."
+    ],
+    "architecture": {
+      "caption": "Serverless: static SPA plus a Lambda API.",
+      "nodes": [
+        {
+          "id": "browser",
+          "label": "Browser",
+          "kind": "actor",
+          "col": 0,
+          "row": 1,
+          "note": "Vite single-page app."
+        },
+        {
+          "id": "cdn",
+          "label": "CloudFront + S3",
+          "kind": "entry",
+          "col": 1,
+          "row": 0,
+          "note": "Hosts the static frontend."
+        },
+        {
+          "id": "api",
+          "label": "API Gateway",
+          "kind": "entry",
+          "col": 1,
+          "row": 2,
+          "note": "HTTP API in front of the backend."
+        },
+        {
+          "id": "fn",
+          "label": "Lambda (FastAPI)",
+          "kind": "compute",
+          "col": 2,
+          "row": 2,
+          "note": "FastAPI wrapped with Mangum."
+        },
+        {
+          "id": "bedrock",
+          "label": "Bedrock (optional)",
+          "kind": "external",
+          "col": 3,
+          "row": 0.5,
+          "note": "Generation and gap suggestions. DEMO_MODE avoids Bedrock spend."
+        },
+        {
+          "id": "ddb",
+          "label": "DynamoDB",
+          "kind": "store",
+          "col": 3,
+          "row": 1.5,
+          "note": "Project history."
+        },
+        {
+          "id": "s3",
+          "label": "S3 artifacts",
+          "kind": "store",
+          "col": 3,
+          "row": 2.5,
+          "note": "Exports and uploads."
+        },
+        {
+          "id": "logs",
+          "label": "CloudWatch Logs",
+          "kind": "store",
+          "col": 3,
+          "row": 3.5,
+          "note": "Function logs."
+        }
+      ],
+      "edges": [
+        {
+          "from": "browser",
+          "to": "cdn"
+        },
+        {
+          "from": "browser",
+          "to": "api"
+        },
+        {
+          "from": "api",
+          "to": "fn"
+        },
+        {
+          "from": "fn",
+          "to": "bedrock"
+        },
+        {
+          "from": "fn",
+          "to": "ddb"
+        },
+        {
+          "from": "fn",
+          "to": "s3"
+        },
+        {
+          "from": "fn",
+          "to": "logs"
+        }
+      ]
+    },
+    "decisions": [
+      "Rules first, AI second: the deterministic engine gives evidence, the model adds suggestions.",
+      "Scope boundary: the product designs and reviews architectures only and never deploys customer infrastructure.",
+      "Demo mode with labelled sample data keeps development free of model spend."
+    ],
+    "security": [
+      "The deploy workflow assumes an AWS role through GitHub OIDC; no long-lived AWS keys are stored in the repository.",
+      "Bedrock access is optional and off in demo mode."
+    ],
+    "deployment": [
+      "CI runs Ruff, pytest, a Lambda package smoke build and the frontend build on every change.",
+      "A separate deploy workflow ships the backend and frontend to AWS."
+    ],
+    "results": [],
+    "limitations": [
+      "PNG export is a placeholder diagram (per README)."
+    ],
+    "sources": [
+      "README.md",
+      ".github/workflows/ci.yml",
+      ".github/workflows/deploy.yml"
+    ]
+  }
+}

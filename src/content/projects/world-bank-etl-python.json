@@ -1,0 +1,16 @@
+{
+  "name": "world bank etl python",
+  "tier": "archive",
+  "order": 61,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Python ETL pipeline extracting, transforming, and loading data on the world's largest banks by market capitalization",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/world-bank-etl-python"
+  }
+}

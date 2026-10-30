@@ -1,0 +1,16 @@
+{
+  "name": "Fabric Healthcare Medallion NYC",
+  "tier": "archive",
+  "order": 49,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Description not yet provided on GitHub.",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/Fabric-Healthcare-Medallion-NYC"
+  }
+}

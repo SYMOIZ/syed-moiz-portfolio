@@ -1,0 +1,16 @@
+{
+  "name": "FraudSenseAI",
+  "tier": "archive",
+  "order": 52,
+  "status": "unconfirmed",
+  "domains": [
+    "apps"
+  ],
+  "summary": "FraudSenseAI - AI-powered fraud detection system",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/FraudSenseAI"
+  }
+}

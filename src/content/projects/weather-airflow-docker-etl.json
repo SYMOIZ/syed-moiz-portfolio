@@ -1,0 +1,16 @@
+{
+  "name": "weather airflow docker etl",
+  "tier": "archive",
+  "order": 60,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Containerized weather ETL pipeline using Apache Airflow and Docker to fetch, transform, and load Open-Meteo data",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/weather-airflow-docker-etl"
+  }
+}

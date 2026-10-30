@@ -1,0 +1,16 @@
+{
+  "name": "sql book info",
+  "tier": "archive",
+  "order": 58,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "SQL The Language of Data - Book notes and exercises",
+  "stack": [
+    "TSQL"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/sql-book-info"
+  }
+}

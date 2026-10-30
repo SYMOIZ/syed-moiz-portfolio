@@ -1,0 +1,16 @@
+{
+  "name": "ecommerce airflow data pipeline",
+  "tier": "archive",
+  "order": 45,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Batch ecommerce data pipeline with Airflow orchestration, S3 data lake, and parallel customer and order processing",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/ecommerce-airflow-data-pipeline"
+  }
+}

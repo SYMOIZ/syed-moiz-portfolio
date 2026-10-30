@@ -1,0 +1,16 @@
+{
+  "name": "coinmarketcap data scraper",
+  "tier": "archive",
+  "order": 44,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Automated scraper for real-time cryptocurrency market data from CoinMarketCap using Python and BeautifulSoup",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/coinmarketcap-data-scraper"
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "name": "DLQ Judge",
+  "tier": "featured",
+  "order": 1,
+  "status": "hackathon",
+  "statusNote": "Hackathon prototype. The repository's deployment report records a deploy to us-east-1 on 18 Oct 2026; current availability is not confirmed.",
+  "domains": [
+    "incident-response",
+    "ai-ops",
+    "iac",
+    "security",
+    "cost"
+  ],
+  "summary": "A confidence-gated agent that triages Amazon SQS dead-letter queues. For each failed message it redrives, quarantines, discards or escalates, and asks Amazon Bedrock for a second opinion only when it is unsure.",
+  "stack": [
+    "Python",
+    "Amazon SQS",
+    "Amazon S3",
+    "Amazon Bedrock",
+    "Strands Decider 2B",
+    "AWS CloudFormation",
+    "Amazon EC2",
+    "AWS Systems Manager",
+    "Amazon CloudFront",
+    "Amazon Cognito",
+    "AWS IAM"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/DLQ-Hackathon-Aws"
+  },
+  "caseStudy": {
+    "problem": "Failed messages pile up in SQS dead-letter queues. Manual triage does not scale, and blindly redriving or deleting is unsafe. Operators need an agent that acts only when the evidence is strong and escalates when it is not.",
+    "approach": [
+      "Each message gets one of five actions: redrive now, redrive later, quarantine the payload in S3, discard a confirmed duplicate, or escalate to a human.",
+      "Strands Decider 2B scores the options. At 0.85 or above the agent acts; between 0.60 and 0.85 it asks Amazon Bedrock and acts only if Bedrock agrees; below 0.60 it escalates.",
+      "The decision logic ships as a reusable module, patterns/confidence-gated-action, with typed options, thresholds, guards and a pluggable Bedrock interface."
+    ],
+    "architecture": {
+      "caption": "Confidence-gated triage. Hover or focus a component to see its role.",
+      "nodes": [
+        {
+          "id": "dlq",
+          "label": "SQS DLQ",
+          "kind": "entry",
+          "col": 0,
+          "row": 1,
+          "note": "Dead-letter queues for the orders, payments and shipping queues hold failed messages."
+        },
+        {
+          "id": "judge",
+          "label": "DLQ Judge agent",
+          "kind": "compute",
+          "col": 1,
+          "row": 1,
+          "note": "Reads messages, masks PII, and asks the decider for the safest next action."
+        },
+        {
+          "id": "decider",
+          "label": "Decider 2B",
+          "kind": "decision",
+          "col": 2,
+          "row": 1,
+          "note": "Strands Decider 2B returns a probability per action. Its confidence picks the path."
+        },
+        {
+          "id": "bedrock",
+          "label": "Amazon Bedrock",
+          "kind": "external",
+          "col": 3,
+          "row": 0,
+          "note": "Second opinion, used only in the 0.60 to 0.85 band so cost and latency stay low."
+        },
+        {
+          "id": "actions",
+          "label": "Actions",
+          "kind": "action",
+          "col": 3,
+          "row": 1,
+          "note": "Applied only with --apply. The default run is a dry run."
+        },
+        {
+          "id": "escalate",
+          "label": "Escalate / report",
+          "kind": "action",
+          "col": 3,
+          "row": 2,
+          "note": "Low confidence or disagreement leaves the message for a human."
+        },
+        {
+          "id": "redrive",
+          "label": "SQS redrive",
+          "kind": "store",
+          "col": 4,
+          "row": 0,
+          "note": "Retry immediately or after a delay to the source queue."
+        },
+        {
+          "id": "s3",
+          "label": "S3 quarantine",
+          "kind": "store",
+          "col": 4,
+          "row": 1,
+          "note": "Poison payloads are parked in S3 for engineering."
+        },
+        {
+          "id": "delete",
+          "label": "Delete duplicate",
+          "kind": "action",
+          "col": 4,
+          "row": 2,
+          "note": "Guarded: needs at least 0.90 confidence and an idempotency key."
+        },
+        {
+          "id": "audit",
+          "label": "Audit report",
+          "kind": "store",
+          "col": 4,
+          "row": 3,
+          "note": "Every run writes a per-run audit log."
+        }
+      ],
+      "edges": [
+        {
+          "from": "dlq",
+          "to": "judge"
+        },
+        {
+          "from": "judge",
+          "to": "decider"
+        },
+        {
+          "from": "decider",
+          "to": "actions",
+          "label": "≥ 0.85"
+        },
+        {
+          "from": "decider",
+          "to": "bedrock",
+          "label": "0.60–0.85"
+        },
+        {
+          "from": "bedrock",
+          "to": "actions",
+          "label": "agrees"
+        },
+        {
+          "from": "bedrock",
+          "to": "escalate",
+          "label": "disagrees"
+        },
+        {
+          "from": "decider",
+          "to": "escalate",
+          "label": "< 0.60"
+        },
+        {
+          "from": "actions",
+          "to": "redrive"
+        },
+        {
+          "from": "actions",
+          "to": "s3"
+        },
+        {
+          "from": "actions",
+          "to": "delete"
+        },
+        {
+          "from": "actions",
+          "to": "audit"
+        }
+      ]
+    },
+    "decisions": [
+      "Bedrock is called only in the uncertain band, so confident decisions cost nothing extra and stay fast.",
+      "Discarding is treated as the riskiest action and needs both 0.90 confidence and an idempotency key.",
+      "A CPU instance (t3.xlarge) was chosen because the account's GPU instance quota was zero; this is recorded in the deployment report."
+    ],
+    "security": [
+      "Dry run by default; mutating actions require an explicit --apply flag.",
+      "PII is masked before anything reaches the decider or the logs.",
+      "IAM is scoped to the dlqj-* queues, the quarantine bucket and Bedrock invoke.",
+      "The EC2 security group accepts traffic only from the CloudFront prefix list. There is no SSH; administration goes through Systems Manager."
+    ],
+    "deployment": [
+      "One CloudFormation stack creates the SQS queues and DLQs, S3 buckets, Cognito user pool, IAM roles, the EC2 instance and a CloudFront distribution.",
+      "The app is packaged to S3 and installed as a systemd service through SSM Run Command.",
+      "AWS Budgets definitions live in the repository's infra folder."
+    ],
+    "results": [
+      {
+        "text": "On a 300-message benchmark, every approach had a 0% unsafe-action rate. Accuracy was 100% for the rules baseline and 6.7% for both Bedrock-only and DLQ Judge, so the agent does not yet beat simple rules on this dataset.",
+        "source": "bench/results/results.md"
+      },
+      {
+        "text": "Estimated running cost about $0.17 per hour while the instance is on (t3.xlarge plus storage).",
+        "source": "docs/COST_REPORT.md"
+      }
+    ],
+    "limitations": [
+      "Benchmark accuracy shows the decider needs more work before it can replace rules.",
+      "Demo video and live app links in the README are still placeholders."
+    ],
+    "sources": [
+      "README.md",
+      "docs/DEPLOYMENT_REPORT.md",
+      "docs/COST_REPORT.md",
+      "bench/results/results.md"
+    ]
+  }
+}

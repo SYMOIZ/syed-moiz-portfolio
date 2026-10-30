@@ -1,0 +1,16 @@
+{
+  "name": "ecommerce data pipeline airflow",
+  "tier": "archive",
+  "order": 46,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "End-to-end batch e-commerce data pipeline on AWS and Snowflake, orchestrated by Apache Airflow (MWAA-compatible).",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/ecommerce-data-pipeline-airflow"
+  }
+}

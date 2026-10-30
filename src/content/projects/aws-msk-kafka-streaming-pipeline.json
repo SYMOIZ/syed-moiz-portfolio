@@ -1,0 +1,16 @@
+{
+  "name": "aws msk kafka streaming pipeline",
+  "tier": "archive",
+  "order": 41,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Production real-time streaming pipeline with Amazon MSK, MSK Connect, S3 sink connector, and automated Snowpipe ingestion",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/aws-msk-kafka-streaming-pipeline"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "InfraPulse",
+  "tier": "archive",
+  "order": 11,
+  "status": "prototype",
+  "statusNote": "Local-first MVP (per its README).",
+  "domains": [
+    "ai-ops",
+    "containers"
+  ],
+  "summary": "An always-on infrastructure-learning agent that generates one structured engineering insight per day and shows it on an operations-style dashboard.",
+  "stack": [
+    "Python",
+    "FastAPI",
+    "SQLite",
+    "React",
+    "Vite",
+    "APScheduler",
+    "Docker Compose"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/InfraPulse"
+  }
+}

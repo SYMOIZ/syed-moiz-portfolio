@@ -1,0 +1,135 @@
+{
+  "name": "IncidentLens",
+  "tier": "featured",
+  "order": 2,
+  "status": "prototype",
+  "statusNote": "Sample project. Not deployed anywhere; no production traffic claims (per its README).",
+  "domains": [
+    "incident-response",
+    "observability",
+    "containers"
+  ],
+  "summary": "Lightweight incident detection for SRE-style workflows. It ingests structured JSON logs, detects repeated errors and error-rate spikes against a baseline, and dedupes them into incidents you can acknowledge and resolve.",
+  "stack": [
+    "Python 3.12",
+    "FastAPI",
+    "Pydantic",
+    "SQLite",
+    "pytest",
+    "Ruff",
+    "Docker",
+    "Docker Compose"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/incidentlens-sre"
+  },
+  "caseStudy": {
+    "problem": "Raw logs bury the signal. On-call engineers need repeated errors and abnormal error rates grouped into a small number of incidents with a clear lifecycle, not thousands of lines.",
+    "approach": [
+      "Logs arrive through a REST API or a CLI that reads JSONL.",
+      "A pure detection engine fingerprints messages, flags repeats inside a sliding window, and compares recent counts against a historical baseline.",
+      "Ongoing issues are deduped into incidents that move through open, acknowledged and resolved."
+    ],
+    "architecture": {
+      "caption": "Thin adapters around a pure detection core.",
+      "nodes": [
+        {
+          "id": "cli",
+          "label": "CLI (JSONL)",
+          "kind": "entry",
+          "col": 0,
+          "row": 0,
+          "note": "Exit code 1 when incidents are created or updated, 0 when none, 2 on errors, so it can gate a pipeline."
+        },
+        {
+          "id": "api",
+          "label": "REST API",
+          "kind": "entry",
+          "col": 0,
+          "row": 1,
+          "note": "POST /logs, GET and PATCH /incidents, GET /health. OpenAPI docs at /docs."
+        },
+        {
+          "id": "service",
+          "label": "IncidentService",
+          "kind": "compute",
+          "col": 1,
+          "row": 0.5,
+          "note": "Owns ingest, detect, and create-or-bump incident."
+        },
+        {
+          "id": "engine",
+          "label": "DetectionEngine",
+          "kind": "decision",
+          "col": 2,
+          "row": 0,
+          "note": "No I/O. Fingerprints, repeat thresholds and baseline comparison, all unit-testable."
+        },
+        {
+          "id": "repo",
+          "label": "IncidentRepository",
+          "kind": "compute",
+          "col": 2,
+          "row": 1,
+          "note": "Parameterised queries only."
+        },
+        {
+          "id": "db",
+          "label": "SQLite (WAL)",
+          "kind": "store",
+          "col": 3,
+          "row": 1,
+          "note": "Single-process store on a Docker volume."
+        }
+      ],
+      "edges": [
+        {
+          "from": "cli",
+          "to": "service"
+        },
+        {
+          "from": "api",
+          "to": "service"
+        },
+        {
+          "from": "service",
+          "to": "engine",
+          "label": "detect"
+        },
+        {
+          "from": "service",
+          "to": "repo",
+          "label": "persist"
+        },
+        {
+          "from": "repo",
+          "to": "db"
+        }
+      ]
+    },
+    "decisions": [
+      "Detection has no I/O, so thresholds and fingerprinting are tested without a database.",
+      "All tuning lives in environment variables with an INCIDENTLENS_ prefix: repeat threshold, window, baseline multiplier and a cold-start guard.",
+      "The CLI's exit codes make it usable as a CI or cron gate."
+    ],
+    "security": [
+      "Pydantic validation with size limits on messages and batches.",
+      "Validation errors return structured field errors instead of echoing request bodies.",
+      "Parameterised SQL queries; the container runs as a non-root user.",
+      "No secrets in the repository; configuration comes from the environment."
+    ],
+    "deployment": [
+      "Runs locally with make run, or with docker compose up --build.",
+      "Tests cover the API, CLI, detection engine, fingerprinting and service layers."
+    ],
+    "results": [],
+    "limitations": [
+      "Single-process SQLite, not a multi-writer store.",
+      "The baseline is a simple per-fingerprint window average, not seasonal.",
+      "The API has no authentication; it is a local sample."
+    ],
+    "sources": [
+      "README.md"
+    ]
+  }
+}

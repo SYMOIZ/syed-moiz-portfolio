@@ -1,0 +1,19 @@
+{
+  "name": "Agentic AI Framework for Smart Tourism",
+  "tier": "archive",
+  "order": 14,
+  "status": "unconfirmed",
+  "event": "Contribution · Omdena",
+  "domains": [
+    "ci-cd",
+    "ai-ops"
+  ],
+  "summary": "Contributed to an agentic AI framework for smart tourism operations, supporting Git workflows, CI/CD, technical documentation, governance and cross-team collaboration.",
+  "stack": [
+    "Git",
+    "CI/CD",
+    "Documentation",
+    "Governance"
+  ],
+  "links": {}
+}

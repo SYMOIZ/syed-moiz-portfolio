@@ -1,0 +1,16 @@
+{
+  "name": "stock market kafka pipeline",
+  "tier": "archive",
+  "order": 59,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Real-time stock market data pipeline using Apache Kafka, AWS EC2, S3, Glue, and Athena",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/stock-market-kafka-pipeline"
+  }
+}

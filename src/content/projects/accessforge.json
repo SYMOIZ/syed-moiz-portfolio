@@ -1,0 +1,27 @@
+{
+  "name": "AccessForge",
+  "tier": "secondary",
+  "order": 7,
+  "status": "prototype",
+  "statusNote": "Educational simulator. It does not modify real AWS IAM permissions.",
+  "domains": [
+    "security",
+    "serverless",
+    "iac"
+  ],
+  "summary": "A visual AWS access-control playground. Pick a simulated identity, actions and resources, see Identity → Action → Resource as a graph, generate IAM-style policy JSON, and simulate ALLOWED, DENIED or NEEDS REVIEW.",
+  "stack": [
+    "TypeScript",
+    "React",
+    "Amazon Cognito",
+    "AWS Lambda",
+    "Python",
+    "AWS CDK"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/AccessForge"
+  },
+  "unconfirmedLinks": {
+    "demo": "https://main.d1qfwm1aatocn5.amplifyapp.com"
+  }
+}

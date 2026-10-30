@@ -1,27 +1,31 @@
-// Content and safety checks for the built site. Runs after `astro build` locally, in CI and in Amplify.
+// Content and safety checks for the built site. Runs after `astro build` locally, in CI and on Vercel.
 // Fails the deploy if the output contains placeholder links, unconfirmed links, or anything that
 // looks like a credential or an AWS account identifier.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
 
 const DIST = 'dist';
-const projects = JSON.parse(readFileSync('src/content/projects.json', 'utf8'));
+const PROJECT_DIR = 'src/content/projects';
+const projects = readdirSync(PROJECT_DIR)
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(join(PROJECT_DIR, f), 'utf8')) }));
 const problems = [];
 
 // 1. Data model sanity: every rendered link must be https; no placeholders in data.
 const PLACEHOLDER = /(VIDEO_URL|APP_URL|example\.com|your-email|TODO|<[A-Z_]+>)/;
 for (const p of projects) {
   for (const [kind, url] of Object.entries(p.links ?? {})) {
-    if (!/^https:\/\//.test(url)) problems.push(`projects.json ${p.id}: ${kind} link is not https: ${url}`);
-    if (PLACEHOLDER.test(url)) problems.push(`projects.json ${p.id}: ${kind} link is a placeholder: ${url}`);
+    if (!url) continue; // the admin saves unused links as empty
+    if (!/^https:\/\//.test(url)) problems.push(`project ${p.id}: ${kind} link is not https: ${url}`);
+    if (PLACEHOLDER.test(url)) problems.push(`project ${p.id}: ${kind} link is a placeholder: ${url}`);
   }
   if (p.status === 'production' && !p.links?.demo) {
-    problems.push(`projects.json ${p.id}: status "production" needs a confirmed demo link`);
+    problems.push(`project ${p.id}: status "production" needs a confirmed demo link`);
   }
 }
 
 // 2. Built output: walk dist and scan text files.
-const unconfirmed = projects.flatMap((p) => Object.values(p.unconfirmedLinks ?? {}));
+const unconfirmed = projects.flatMap((p) => Object.values(p.unconfirmedLinks ?? {})).filter(Boolean);
 const SECRET_PATTERNS = [
   [/AKIA[0-9A-Z]{16}/, 'AWS access key id'],
   [/\bgh[pousr]_[A-Za-z0-9]{30,}/, 'GitHub token'],

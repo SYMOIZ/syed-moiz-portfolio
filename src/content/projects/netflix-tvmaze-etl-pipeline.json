@@ -1,0 +1,16 @@
+{
+  "name": "netflix tvmaze etl pipeline",
+  "tier": "archive",
+  "order": 54,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "ETL pipeline using TVMaze API to extract, normalize, and load TV show data into CSV and SQLite",
+  "stack": [
+    "Jupyter Notebook"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/netflix-tvmaze-etl-pipeline"
+  }
+}

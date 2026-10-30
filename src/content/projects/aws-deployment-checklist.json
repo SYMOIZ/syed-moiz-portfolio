@@ -1,0 +1,22 @@
+{
+  "name": "AWS Deployment Checklist",
+  "tier": "secondary",
+  "order": 10,
+  "status": "challenge",
+  "event": "AWS Builder Center · Deploy Your First App Weekend Challenge",
+  "domains": [
+    "serverless",
+    "networking"
+  ],
+  "summary": "A static checklist app for deploying to Amazon S3 with HTTPS through Amazon CloudFront. Progress and custom tasks are saved in the browser.",
+  "stack": [
+    "Amazon S3",
+    "Amazon CloudFront",
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/-AWS-Deployment-Checklist"
+  }
+}

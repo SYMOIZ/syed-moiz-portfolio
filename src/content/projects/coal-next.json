@@ -1,0 +1,17 @@
+{
+  "name": "Coal Next",
+  "tier": "archive",
+  "order": 43,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Data engineering project for coal industry analytics including production, trade, and pricing data pipelines",
+  "stack": [],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/coal-next"
+  },
+  "unconfirmedLinks": {
+    "demo": "https://coal-next.vercel.app"
+  }
+}

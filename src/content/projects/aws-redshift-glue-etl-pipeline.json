@@ -1,0 +1,16 @@
+{
+  "name": "aws redshift glue etl pipeline",
+  "tier": "archive",
+  "order": 42,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Fully automated ETL pipeline with AWS Redshift Serverless, Glue jobs, Step Functions orchestration, and SNS notifications",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/aws-redshift-glue-etl-pipeline"
+  }
+}

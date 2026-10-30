@@ -1,0 +1,166 @@
+{
+  "name": "AWS 3-Tier Architecture",
+  "tier": "featured",
+  "order": 4,
+  "status": "learning",
+  "statusNote": "Learning project built step by step in the AWS console. No Terraform (per its README).",
+  "domains": [
+    "networking",
+    "security"
+  ],
+  "summary": "A secure three-tier network on AWS: an Application Load Balancer for users, OpenVPN as the only admin path to SSH, and a Squid proxy as the controlled way out for private servers.",
+  "stack": [
+    "Amazon VPC",
+    "Application Load Balancer",
+    "Amazon EC2",
+    "Security groups",
+    "OpenVPN",
+    "Squid",
+    "Bash user data"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/aws-3tier-architecture"
+  },
+  "caseStudy": {
+    "problem": "Application servers should not be reachable from the internet, admins still need SSH, and private servers still need packages. Each path needs its own, narrow door.",
+    "approach": [
+      "One VPC with four subnets, an internet gateway, and separate public and private route tables in ap-south-1.",
+      "Users reach the frontend and backend only through the ALB, with path routing for /api/*.",
+      "Admins connect through OpenVPN, locked to their own IP, before SSH. Private hosts reach the internet only through Squid."
+    ],
+    "architecture": {
+      "caption": "Three doors: ALB for users, OpenVPN for admins, Squid for egress.",
+      "nodes": [
+        {
+          "id": "users",
+          "label": "Users",
+          "kind": "actor",
+          "col": 0,
+          "row": 0,
+          "note": "Browser traffic only."
+        },
+        {
+          "id": "admin",
+          "label": "Admin (MyIP)",
+          "kind": "actor",
+          "col": 0,
+          "row": 2,
+          "note": "The VPN security group allows only the admin's public IP."
+        },
+        {
+          "id": "alb",
+          "label": "ALB :80",
+          "kind": "entry",
+          "col": 1,
+          "row": 0,
+          "note": "APP security group. Target groups for frontend and /api/* backend."
+        },
+        {
+          "id": "vpn",
+          "label": "OpenVPN :1194",
+          "kind": "entry",
+          "col": 1,
+          "row": 2,
+          "note": "Public host with an Elastic IP; the only way to reach SSH."
+        },
+        {
+          "id": "fe",
+          "label": "Frontend :80",
+          "kind": "compute",
+          "col": 2,
+          "row": 0,
+          "note": "Private subnet, no public IP. Web security group."
+        },
+        {
+          "id": "be",
+          "label": "Backend :8000",
+          "kind": "compute",
+          "col": 2,
+          "row": 1,
+          "note": "Private subnet, no public IP. /api/health returns ok."
+        },
+        {
+          "id": "ssh",
+          "label": "SSH :22",
+          "kind": "compute",
+          "col": 2,
+          "row": 2,
+          "note": "Connect security group allows SSH only from the VPN."
+        },
+        {
+          "id": "squid",
+          "label": "Squid :8888",
+          "kind": "compute",
+          "col": 3,
+          "row": 0.5,
+          "note": "Proxy security group. Private hosts send outbound traffic here."
+        },
+        {
+          "id": "inet",
+          "label": "Internet",
+          "kind": "external",
+          "col": 4,
+          "row": 0.5,
+          "note": "Package repositories, reached only through the proxy."
+        }
+      ],
+      "edges": [
+        {
+          "from": "users",
+          "to": "alb"
+        },
+        {
+          "from": "alb",
+          "to": "fe"
+        },
+        {
+          "from": "alb",
+          "to": "be",
+          "label": "/api/*"
+        },
+        {
+          "from": "admin",
+          "to": "vpn"
+        },
+        {
+          "from": "vpn",
+          "to": "ssh"
+        },
+        {
+          "from": "fe",
+          "to": "squid",
+          "label": "egress"
+        },
+        {
+          "from": "be",
+          "to": "squid",
+          "label": "egress"
+        },
+        {
+          "from": "squid",
+          "to": "inet"
+        }
+      ]
+    },
+    "decisions": [
+      "One security group per role (APP, Web, Backend, Proxy, Remote, VPN, Connect) keeps every rule narrow and readable.",
+      "No public IPs on application servers.",
+      "A documented cleanup order (ALB, target groups, instances, EIP, security groups, subnets, VPC) because the ALB is billed."
+    ],
+    "security": [
+      "SSH is reachable only through the VPN, and the VPN only from the admin's IP.",
+      "Private servers have controlled egress through a proxy instead of a NAT to everything."
+    ],
+    "deployment": [
+      "Built from a master checklist and a step-by-step DEPLOY.md, with boot scripts in userdata/.",
+      "Tested by checking the ALB DNS, /api/health, healthy target groups, VPN-to-SSH and the proxy path."
+    ],
+    "results": [],
+    "limitations": [
+      "Manual console build; no infrastructure as code yet."
+    ],
+    "sources": [
+      "README.md"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "Enterprise Real Time Streaming Lakehouse Platform",
+  "tier": "archive",
+  "order": 48,
+  "status": "unconfirmed",
+  "domains": [
+    "data"
+  ],
+  "summary": "Production-grade real estate data engineering pipeline",
+  "stack": [
+    "Python"
+  ],
+  "links": {
+    "repo": "https://github.com/SYMOIZ/Enterprise-Real-Time-Streaming-Lakehouse-Platform"
+  }
+}

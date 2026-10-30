@@ -2,6 +2,8 @@
 // Picture/PORTFOLIO_CONTENT_AUDIT.md, or his repositories. Do not add roles, metrics or credentials
 // that are not verified there. Links are rendered only when present.
 
+import certificationData from './certifications.json';
+
 export const profile = {
   name: 'Syed Moiz',
   role: 'DevOps & Platform Engineer',
@@ -88,80 +90,19 @@ export const experience = [
   },
 ];
 
-// Every credential was checked on the issuer's site. `verify` is rendered as a button when present.
-// Microsoft credentials are listed in full; experts first, then associates by date.
-export const certifications = [
-  {
-    name: 'DevOps Engineer Expert',
-    code: 'AZ-400',
-    issuer: 'Microsoft',
-    level: 'Expert',
-    date: 'Sep 2026',
-    expires: 'Sep 2027',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-gb/SyedMoiz-7918/C9E0C17DDD8D698F',
-  },
-  {
-    name: 'Azure Solutions Architect Expert',
-    code: 'AZ-305',
-    issuer: 'Microsoft',
-    level: 'Expert',
-    date: 'Jul 2026',
-    expires: 'Jul 2027',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/D6BDE1189700433F',
-  },
-  {
-    name: 'SQL AI Developer Associate',
-    issuer: 'Microsoft',
-    level: 'Associate',
-    date: 'Aug 2026',
-    expires: 'Aug 2027',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-9194/85F8287FF0AD7E13',
-  },
-  {
-    name: 'Azure Administrator Associate',
-    code: 'AZ-104',
-    issuer: 'Microsoft',
-    level: 'Associate',
-    date: 'Jul 2026',
-    expires: 'Jul 2027',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/199833EC5D7DDFE4',
-  },
-  {
-    name: 'Azure Databricks Data Engineer Associate',
-    code: 'DP-750',
-    issuer: 'Microsoft',
-    level: 'Associate',
-    date: 'Jul 2026',
-    expires: 'Jul 2027',
-    // Active on Microsoft Learn; its public share page belongs to an older Learn profile URL that no longer resolves.
-    verify: '',
-  },
-  {
-    name: 'Fabric Data Engineer Associate',
-    code: 'DP-700',
-    issuer: 'Microsoft',
-    level: 'Associate',
-    date: 'Jul 2026',
-    expires: 'Jul 2027',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/CE0AE929A2115893',
-  },
-  {
-    name: 'AWS Certified AI Practitioner',
-    issuer: 'Amazon Web Services',
-    level: 'Foundational',
-    date: 'Oct 2026',
-    // Public AWS verification lookup (provided by Syed); the visitor enters the validation number there.
-    verify: 'https://cp.certmetrics.com/amazon/en/public/verify/credential',
-  },
-  {
-    name: 'AWS Certified Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    level: 'Foundational',
-    date: 'Oct 2026',
-    expires: 'Oct 2029',
-    verify: 'https://www.credly.com/badges/72edffb8-158d-4c40-a491-dd86921b1b37',
-  },
-];
+// Certifications are edited in the /lock admin (Keystatic) and stored in certifications.json.
+// Every credential was checked on the issuer's site; `verify` renders a Verify button when present.
+export type Certification = {
+  name: string;
+  code?: string;
+  issuer: string;
+  level: string;
+  date: string;
+  expires?: string;
+  verify?: string | null;
+};
+
+export const certifications: Certification[] = certificationData.items;
 
 export const community = [
   {
