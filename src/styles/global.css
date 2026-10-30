@@ -978,36 +978,113 @@ main,
   list-style: none;
 }
 
+.cert-group + .cert-group {
+  margin-top: 36px;
+}
+
+.cert-group-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+}
+
+.cert-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--surface-3);
+  color: var(--text-2);
+  font: 600 0.78rem var(--body);
+}
+
 .cert-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  text-align: center;
+  text-align: left;
 }
 
-.cert-issuer {
+.cert-card--expert {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
+
+.cert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+}
+
+.cert-level {
   color: var(--accent);
-  font: 600 0.7rem var(--body);
-  letter-spacing: 0.2em;
+  font: 600 0.74rem var(--body);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
+.cert-code {
+  padding: 2px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  color: var(--text-2);
+  font-size: 0.74rem;
+}
+
 .cert-name {
-  flex: 1;
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.cert-foot {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.cert-foot .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.cert-foot .cert-date {
+  margin: 0;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.cert-active {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ok);
+  font: 600 0.78rem var(--body);
+}
+
+.cert-active::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 .cert-date {
   margin: 0 0 6px;
   color: var(--muted);
   font-size: 0.86rem;
-}
-
-.cert-pending {
-  color: var(--muted);
-  font-size: 0.8rem;
 }
 
 /* ---------- skills ---------- */
@@ -1748,11 +1825,6 @@ main,
   white-space: normal;
 }
 
-.operate-disclaimer {
-  margin: 12px 0 0;
-  font-size: 0.82rem;
-}
-
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -2452,7 +2524,7 @@ main,
 }
 
 /* ---------- responsive ---------- */
-@media (max-width: 1320px) {
+@media (max-width: 1680px) {
   .status-badge {
     display: none;
   }
@@ -2469,11 +2541,8 @@ main,
   }
 }
 
-@media (max-width: 980px) {
-  .carousel-track {
-    grid-auto-columns: calc((100% - 24px) / 2);
-  }
-
+/* The full nav needs about 1150px; below that it collapses into the menu button. */
+@media (max-width: 1150px) {
   .menu-btn {
     display: inline-grid;
   }
@@ -2513,6 +2582,12 @@ main,
   .nav-indicator {
     display: none;
   }
+}
+
+@media (max-width: 980px) {
+  .carousel-track {
+    grid-auto-columns: calc((100% - 24px) / 2);
+  }
 
   .about-grid,
   .resume-grid,
@@ -2546,6 +2621,15 @@ main,
 }
 
 @media (max-width: 640px) {
+  .cert-card {
+    padding: 20px;
+    gap: 6px;
+  }
+
+  .cert-grid {
+    gap: 12px;
+  }
+
   .carousel-track {
     grid-auto-columns: 86%;
     gap: 16px;

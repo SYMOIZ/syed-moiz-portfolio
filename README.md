@@ -1,12 +1,12 @@
 # Syed Moiz: DevOps & Platform Engineering portfolio
 
-A static portfolio for DevOps, platform engineering, SRE and AWS infrastructure work, hosted on AWS Amplify Hosting.
+A static portfolio for DevOps, platform engineering, SRE and AWS infrastructure work, hosted on Vercel.
 
 - **Homepage:** full-screen photo hero with a centred glass card and a cursor-following water ripple; about, find me online, certifications, skills & tech superpowers, "How I work" pipeline, experience & education, a project image carousel and contact.
 - **Page-wide tile grid:** tiles light up along the cursor path (mouse users only; off for touch and reduced motion).
 - **`/projects/`:** every public project, filterable by engineering area, with a status badge on each card.
 - **`/projects/<slug>/`:** case studies with an interactive architecture diagram.
-- **Chaos Mode:** the challenge's creative feature, an incident simulation in which visitors resolve a simulated outage. It is always labelled as a simulation.
+- **Chaos Mode:** an incident simulation in which visitors resolve a simulated outage. It is always labelled as a simulation.
 
 ## Stack
 
@@ -17,7 +17,7 @@ A static portfolio for DevOps, platform engineering, SRE and AWS infrastructure 
 | Images | `astro:assets` → AVIF/WebP at several widths. Sources: `src/assets/images/hero-podium.png`, `portrait.png` (copies of the photos in `Picture/`, which is git-ignored) |
 | Security | Per-page hash-based CSP `<meta>` (Astro `security.csp`) plus header policy in `customHttp.yml` |
 | Tests | Playwright (desktop + mobile), axe accessibility in dark and light themes |
-| Hosting | AWS Amplify Hosting, built from `amplify.yml` |
+| Hosting | Vercel, configured in `vercel.json` (build, output folder and security headers) |
 
 No backend, database, analytics or third-party runtime requests.
 

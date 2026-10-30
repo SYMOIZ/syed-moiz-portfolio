@@ -1,6 +1,16 @@
-# Deployment: AWS Amplify Hosting
+# Deployment
 
-The site is static. Amplify Hosting builds it from GitHub on every push to `main` and serves `dist/` from its CDN.
+The site is static and is hosted on **Vercel**. `vercel.json` sets the build command (`npm run build && npm run check:content`), the `dist` output folder and the security headers.
+
+## Vercel
+
+1. Push the repository to GitHub (below).
+2. On vercel.com: **Add New > Project**, import the repository. Vercel reads `vercel.json`; no settings need changing.
+3. Optional: set the environment variable `SITE_URL` to the production URL (for example `https://<project>.vercel.app`) for absolute canonical and social-preview URLs, then redeploy.
+
+Every push to `main` deploys to production; other branches get preview URLs.
+
+The Amplify instructions below are kept as an alternative.
 
 ## 1. Push the repository to GitHub
 
@@ -13,7 +23,7 @@ git remote add origin https://github.com/SYMOIZ/<repo-name>.git
 git push -u origin main
 ```
 
-Then set `profile.portfolioRepo` in `src/data/profile.ts` to the repository URL so the footer links to it (challenge requirement).
+Then set `profile.portfolioRepo` in `src/data/profile.ts` to the repository URL so the footer links to it.
 
 `.gitignore` already excludes `node_modules/`, `dist/`, `.astro/`, test output and `.env*`.
 

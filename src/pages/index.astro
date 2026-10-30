@@ -25,6 +25,10 @@ const carousel = projects.filter((p) => p.data.tier !== 'archive');
 const archiveCount = projects.length - carousel.length;
 const byId = new Map(projects.map((p) => [p.id, p]));
 const [first, ...rest] = profile.name.split(' ');
+const certGroups = [...new Set(certifications.map((c) => c.issuer))].map((issuer) => ({
+  issuer,
+  items: certifications.filter((c) => c.issuer === issuer),
+}));
 
 const ICONS: Record<string, string> = {
   Cloud: 'M7 18a4 4 0 0 1-.6-7.96A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9H7z',
@@ -135,23 +139,33 @@ const socials = [
   </section>
 
   <!-- CERTIFICATIONS -->
-  <section class="section" id="certifications" data-stage="about">
+  <section class="section" id="certifications" data-stage="certifications">
     <div class="container">
       <SectionHead kicker="Credentials and recognition" title="Certifications" />
-      <ul class="cert-grid">
-        {certifications.map((c, i) => (
-          <li class="card lift cert-card" data-reveal data-i={i}>
-            <span class="cert-issuer">{c.issuer}</span>
-            <h3 class="cert-name">{c.name}</h3>
-            <p class="cert-date">{c.date}</p>
-            {c.verify ? (
-              <a class="btn btn-outline btn-sm" href={c.verify} rel="noopener noreferrer" target="_blank" aria-label={`Verify ${c.name}`}>Verify</a>
-            ) : (
-              <span class="cert-pending">Verification link pending</span>
-            )}
-          </li>
-        ))}
-      </ul>
+      {certGroups.map((g) => (
+        <div class="cert-group">
+          <h3 class="cert-group-title" data-reveal>{g.issuer} <span class="cert-count">{g.items.length}</span></h3>
+          <ul class="cert-grid">
+            {g.items.map((c, i) => (
+              <li class:list={['card lift cert-card', c.level === 'Expert' && 'cert-card--expert']} data-reveal data-i={i}>
+                <span class="cert-meta">
+                  <span class="cert-level">{c.level}</span>
+                  {c.code && <span class="cert-code mono">{c.code}</span>}
+                </span>
+                <h4 class="cert-name">{c.name}</h4>
+                <div class="cert-foot">
+                  <p class="cert-date">{c.date}{c.expires && <> – {c.expires}</>}</p>
+                  {c.verify ? (
+                    <a class="btn btn-outline btn-sm" href={c.verify} rel="noopener noreferrer" target="_blank" aria-label={`Verify ${c.name}`}>Verify</a>
+                  ) : (
+                    <span class="cert-active">Active</span>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -237,7 +251,7 @@ const socials = [
             {community.map((c, i) => (
               <li class="card lift timeline-card" data-reveal data-i={i}>
                 <span class="timeline-period">{c.period}</span>
-                <h4>{c.title}</h4>
+                <h4>{c.url ? <a href={c.url} rel="noopener noreferrer" target="_blank">{c.title}</a> : c.title}</h4>
                 <p class="timeline-text">{c.text}</p>
               </li>
             ))}

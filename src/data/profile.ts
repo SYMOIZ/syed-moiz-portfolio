@@ -13,7 +13,7 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/symoiz',
   github: 'https://github.com/SYMOIZ',
   // Set to this portfolio's public repository URL once it exists.
-  portfolioRepo: '',
+  portfolioRepo: 'https://github.com/SYMOIZ/syed-moiz-portfolio',
   // Path of the résumé PDF placed in public/ (for example '/Syed-Moiz-Resume.pdf'). Empty hides "Download CV".
   resume: '',
   now: 'DevOps Engineer, Infrastructure at Keenu, working on infrastructure operations, production systems and service reliability.',
@@ -49,11 +49,11 @@ export const capabilities = [
 
 export const skillGroups = [
   { name: 'Cloud', skills: ['AWS', 'Microsoft Azure', 'IAM', 'VPC networking', 'CloudWatch'] },
-  { name: 'Automation', skills: ['CI/CD', 'GitHub Actions', 'Git', 'Terraform', 'CloudFormation', 'AWS CDK'] },
+  { name: 'Automation', skills: ['CI/CD', 'GitHub Actions', 'Azure DevOps', 'Git', 'Terraform', 'CloudFormation', 'AWS CDK'] },
   { name: 'Containers', skills: ['Docker', 'Docker Compose', 'Kubernetes'] },
   { name: 'Systems', skills: ['Linux', 'Networking', 'Virtualization', 'Bash'] },
   { name: 'Languages', skills: ['Python', 'SQL', 'TypeScript'] },
-  { name: 'Data platforms', skills: ['Snowflake', 'Kafka', 'Azure Databricks'] },
+  { name: 'Data platforms', skills: ['Snowflake', 'Kafka', 'Azure Databricks', 'Microsoft Fabric'] },
 ];
 
 export const experience = [
@@ -88,44 +88,78 @@ export const experience = [
   },
 ];
 
-// Only credentials verified on the issuer's site are linked. Others are listed without a link.
+// Every credential was checked on the issuer's site. `verify` is rendered as a button when present.
+// Microsoft credentials are listed in full; experts first, then associates by date.
 export const certifications = [
   {
-    name: 'AWS Certified Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: 'Oct 2026',
-    verify: 'https://www.credly.com/badges/72edffb8-158d-4c40-a491-dd86921b1b37',
+    name: 'DevOps Engineer Expert',
+    code: 'AZ-400',
+    issuer: 'Microsoft',
+    level: 'Expert',
+    date: 'Sep 2026',
+    expires: 'Sep 2027',
+    verify: 'https://learn.microsoft.com/api/credentials/share/en-gb/SyedMoiz-7918/C9E0C17DDD8D698F',
+  },
+  {
+    name: 'Azure Solutions Architect Expert',
+    code: 'AZ-305',
+    issuer: 'Microsoft',
+    level: 'Expert',
+    date: 'Jul 2026',
+    expires: 'Jul 2027',
+    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/D6BDE1189700433F',
+  },
+  {
+    name: 'SQL AI Developer Associate',
+    issuer: 'Microsoft',
+    level: 'Associate',
+    date: 'Aug 2026',
+    expires: 'Aug 2027',
+    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-9194/85F8287FF0AD7E13',
+  },
+  {
+    name: 'Azure Administrator Associate',
+    code: 'AZ-104',
+    issuer: 'Microsoft',
+    level: 'Associate',
+    date: 'Jul 2026',
+    expires: 'Jul 2027',
+    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/199833EC5D7DDFE4',
+  },
+  {
+    name: 'Azure Databricks Data Engineer Associate',
+    code: 'DP-750',
+    issuer: 'Microsoft',
+    level: 'Associate',
+    date: 'Jul 2026',
+    expires: 'Jul 2027',
+    // Active on Microsoft Learn; its public share page belongs to an older Learn profile URL that no longer resolves.
+    verify: '',
+  },
+  {
+    name: 'Fabric Data Engineer Associate',
+    code: 'DP-700',
+    issuer: 'Microsoft',
+    level: 'Associate',
+    date: 'Jul 2026',
+    expires: 'Jul 2027',
+    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/CE0AE929A2115893',
   },
   {
     name: 'AWS Certified AI Practitioner',
     issuer: 'Amazon Web Services',
+    level: 'Foundational',
     date: 'Oct 2026',
     // Public AWS verification lookup (provided by Syed); the visitor enters the validation number there.
     verify: 'https://cp.certmetrics.com/amazon/en/public/verify/credential',
   },
   {
-    name: 'DevOps Engineer Expert',
-    issuer: 'Microsoft',
-    date: 'Sep 2026',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-gb/SyedMoiz-7918/C9E0C17DDD8D698F',
-  },
-  {
-    name: 'Azure Solutions Architect Expert (AZ-305)',
-    issuer: 'Microsoft',
-    date: 'Jul 2026',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/D6BDE1189700433F',
-  },
-  {
-    name: 'Azure Administrator Associate (AZ-104)',
-    issuer: 'Microsoft',
-    date: 'Jul 2026',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/199833EC5D7DDFE4',
-  },
-  {
-    name: 'Fabric Data Engineer Associate (DP-700)',
-    issuer: 'Microsoft',
-    date: 'Jul 2026',
-    verify: 'https://learn.microsoft.com/api/credentials/share/en-us/SyedMoiz-7918/CE0AE929A2115893',
+    name: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    level: 'Foundational',
+    date: 'Oct 2026',
+    expires: 'Oct 2029',
+    verify: 'https://www.credly.com/badges/72edffb8-158d-4c40-a491-dd86921b1b37',
   },
 ];
 
@@ -134,6 +168,7 @@ export const community = [
     title: 'Microsoft Student Ambassador',
     period: 'Oct 2026 – Present',
     text: 'Hosting workshops and technical events on cloud development, AI services and GitHub for students.',
+    url: 'https://mvp.microsoft.com/studentambassadors/certificate/466332c4-a43e-4f99-b343-770dc7b712c5',
   },
   {
     title: 'IEEE Research Group – Volunteer Host',
