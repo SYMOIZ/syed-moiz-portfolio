@@ -18,6 +18,18 @@
         "dev"
       ],
       "port": 4322
+    },
+    {
+      "name": "portfolio-dev-github",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 4322,
+      "env": {
+        "PUBLIC_KEYSTATIC_STORAGE": "github"
+      }
     }
   ]
 }
