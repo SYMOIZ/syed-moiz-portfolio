@@ -8,7 +8,8 @@ const ADMIN_DIRECTIVES: Record<string, string> = {
   'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
   'font-src': "'self' https://fonts.gstatic.com",
   'img-src': "'self' data: blob: https://avatars.githubusercontent.com https://*.githubusercontent.com",
-  'connect-src': "'self' https://api.github.com https://github.com",
+  // File contents are read from raw.githubusercontent.com; the GitHub API does the rest.
+  'connect-src': "'self' https://api.github.com https://github.com https://raw.githubusercontent.com",
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
