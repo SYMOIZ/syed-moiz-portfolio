@@ -58,7 +58,7 @@ Projects live in `src/content/projects.json` and are validated by the schema in 
 | `caseStudy` | Adds a `/projects/<id>/` page: problem, approach, architecture diagram, decisions, security, deployment, results (each with a source), limitations. |
 | `published` | `false` hides a project everywhere. |
 
-Each project is one JSON file in `src/content/projects/` (the file name is the URL slug); certifications live in `src/data/certifications.json`. Both are edited in the admin at `/lock` (Keystatic): sign in with GitHub, edit, save, and the save is committed to this repository, which redeploys the site. Only GitHub accounts with write access to the repository can save. Setup is in `docs/DEPLOYMENT.md`.
+Each project is one JSON file in `src/content/projects/` (the file name is the URL slug); all other site text (profile and hero, about, section headings, skills, How I work, experience, education, community, research, certifications) lives in JSON files in `src/data/`. Everything is edited in the admin at `/lock` (Keystatic): sign in with GitHub, edit, save, and the save is committed to this repository, which redeploys the site. Only GitHub accounts with write access to the repository can save. Setup is in `docs/DEPLOYMENT.md`.
 
 ## Local development
 

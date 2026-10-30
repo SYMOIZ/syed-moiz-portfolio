@@ -1,0 +1,77 @@
+{
+  "experience": [
+    {
+      "role": "DevOps Engineer – Infrastructure",
+      "org": "Keenu",
+      "period": "Aug 2026 – Present",
+      "points": [
+        "Support infrastructure operations, production systems and service reliability.",
+        "Assist with monitoring, troubleshooting, automation and infrastructure management.",
+        "Collaborate with engineering teams to improve operational workflows."
+      ]
+    },
+    {
+      "role": "Infrastructure & ML Engineer II",
+      "org": "Omdena",
+      "period": "Apr 2026 – Aug 2026",
+      "points": [
+        "Contributed to an agentic AI framework for smart tourism operations in Bhutan, in the Foundations & Governance team.",
+        "Supported Git workflows, CI/CD, technical documentation, governance and cross-team collaboration."
+      ]
+    },
+    {
+      "role": "Cloud Data Engineer",
+      "org": "SEBKO Solution",
+      "period": "Jul 2024 – Aug 2026",
+      "points": [
+        "Built and maintained cloud infrastructure and deployment pipelines across AWS and Azure.",
+        "Automated infrastructure and deployments, improving processing and deployment time.",
+        "Supported monitoring, security, reliability and cloud modernisation."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "BS Computer Science",
+      "school": "Iqra University"
+    },
+    {
+      "degree": "Diploma in Networking",
+      "school": "Institute of Business Administration (IBA)"
+    }
+  ],
+  "community": [
+    {
+      "url": "https://mvp.microsoft.com/studentambassadors/certificate/466332c4-a43e-4f99-b343-770dc7b712c5",
+      "title": "Microsoft Student Ambassador",
+      "period": "Oct 2026 – Present",
+      "text": "Hosting workshops and technical events on cloud development, AI services and GitHub for students."
+    },
+    {
+      "url": "",
+      "title": "IEEE Research Group – Volunteer Host",
+      "period": "Jan 2026 – Present",
+      "text": "Hosting and managing research events, attendee coordination and session facilitation."
+    },
+    {
+      "url": "",
+      "title": "Hacktoberfest 2026 · Karachi Hack Day",
+      "period": "Oct 2026",
+      "text": "Built ErrorSaathi in the Harness track."
+    }
+  ],
+  "publications": [
+    {
+      "title": "Security and Threat Detection through Cloud-Based Wazuh Deployment",
+      "venue": "IEEE",
+      "date": "April 2024",
+      "url": ""
+    },
+    {
+      "title": "Unveiling the Arsenal of User Data Protection Tools and Practices",
+      "venue": "IEEE",
+      "date": "April 2024",
+      "url": ""
+    }
+  ]
+}

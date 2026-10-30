@@ -88,7 +88,7 @@ Recommended: **Billing → Budgets → Create budget** with a monthly cost budge
 
 ## 6. Updating content
 
-- Use the `/lock` admin, or edit `src/content/projects/*.json`, `src/data/certifications.json` or `src/data/profile.ts` and push. Vercel rebuilds automatically.
+- Use the `/lock` admin, or edit `src/content/projects/*.json` or the JSON files in `src/data/` and push. Vercel rebuilds automatically.
 - To publish a demo link you have confirmed, move it from `unconfirmedLinks` to `links`.
 
 ## Challenge submission checklist
@@ -100,7 +100,7 @@ Recommended: **Billing → Budgets → Create budget** with a monthly cost budge
 
 ## `/lock` admin (Keystatic with GitHub login)
 
-`/lock` redirects to `/keystatic`, a [Keystatic](https://keystatic.com) admin for projects and certifications. In production it signs in with GitHub and every save is a commit to `main`, which redeploys the site. Only GitHub accounts with write access to the repository can save. It needs no database, and its two routes (`/keystatic`, `/api/keystatic`) run as Vercel functions; every other page stays static.
+`/lock` redirects to `/keystatic`, a [Keystatic](https://keystatic.com) admin for every part of the site: profile and hero, section headings, skills, How I work, experience and education, community, research, certifications and projects. In production it signs in with GitHub and every save is a commit to `main`, which redeploys the site. Only GitHub accounts with write access to the repository can save. It needs no database, and its two routes (`/keystatic`, `/api/keystatic`) run as Vercel functions; every other page stays static.
 
 Locally, `npm run dev` and http://localhost:4322/keystatic edit the files on disk, with no login.
 

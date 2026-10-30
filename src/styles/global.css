@@ -351,6 +351,28 @@ main,
   transition: background-color 0.35s, border-color 0.35s, backdrop-filter 0.35s;
 }
 
+/* Homepage: the bar stays out of the way over the hero and slides in once you scroll. It also shows
+   while it holds keyboard focus or during Chaos Mode, whose status lives in the bar. */
+.site-header--reveal {
+  transition:
+    transform 0.35s var(--ease),
+    opacity 0.35s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.site-header--reveal:not(.is-scrolled):not(:focus-within) {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.chaos-open .site-header--reveal,
+body.incident-active .site-header--reveal {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .site-header.is-scrolled,
 .page-inner .site-header {
   background: color-mix(in srgb, var(--bg) 82%, transparent);

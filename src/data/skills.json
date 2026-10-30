@@ -1,0 +1,133 @@
+{
+  "skillGroups": [
+    {
+      "name": "Cloud",
+      "skills": [
+        "AWS",
+        "Microsoft Azure",
+        "IAM",
+        "VPC networking",
+        "CloudWatch"
+      ]
+    },
+    {
+      "name": "Automation",
+      "skills": [
+        "CI/CD",
+        "GitHub Actions",
+        "Azure DevOps",
+        "Git",
+        "Terraform",
+        "CloudFormation",
+        "AWS CDK"
+      ]
+    },
+    {
+      "name": "Containers",
+      "skills": [
+        "Docker",
+        "Docker Compose",
+        "Kubernetes"
+      ]
+    },
+    {
+      "name": "Systems",
+      "skills": [
+        "Linux",
+        "Networking",
+        "Virtualization",
+        "Bash"
+      ]
+    },
+    {
+      "name": "Languages",
+      "skills": [
+        "Python",
+        "SQL",
+        "TypeScript"
+      ]
+    },
+    {
+      "name": "Data platforms",
+      "skills": [
+        "Snowflake",
+        "Kafka",
+        "Azure Databricks",
+        "Microsoft Fabric"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "area": "Automated incident response",
+      "projects": [
+        "dlq-judge",
+        "incidentlens",
+        "errorsaathi"
+      ]
+    },
+    {
+      "area": "CI/CD and deployment controls",
+      "projects": [
+        "infrapilot-ai",
+        "errorsaathi",
+        "core-auth"
+      ]
+    },
+    {
+      "area": "Infrastructure as Code",
+      "projects": [
+        "dlq-judge",
+        "aws-resourcelens",
+        "accessforge"
+      ]
+    },
+    {
+      "area": "Networking and access",
+      "projects": [
+        "aws-3tier-architecture",
+        "accessforge"
+      ]
+    },
+    {
+      "area": "Cloud security and IAM",
+      "projects": [
+        "dlq-judge",
+        "accessforge",
+        "aws-resourcelens",
+        "infrapilot-ai"
+      ]
+    },
+    {
+      "area": "Observability",
+      "projects": [
+        "incidentlens",
+        "supportflow-ai"
+      ]
+    },
+    {
+      "area": "Cost and governance",
+      "projects": [
+        "aws-resourcelens",
+        "dlq-judge",
+        "infrapilot-ai"
+      ]
+    },
+    {
+      "area": "Containers",
+      "projects": [
+        "incidentlens",
+        "docker-devops-workshop",
+        "infrapulse"
+      ]
+    },
+    {
+      "area": "Kubernetes / EKS and GitOps",
+      "projects": []
+    },
+    {
+      "area": "Progressive delivery and SLOs",
+      "projects": []
+    }
+  ]
+}

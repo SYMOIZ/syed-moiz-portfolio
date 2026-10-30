@@ -1,0 +1,41 @@
+{
+  "name": "Syed Moiz",
+  "role": "DevOps & Platform Engineer",
+  "roles": [
+    "DevOps Engineering",
+    "Platform Engineering",
+    "Site Reliability",
+    "Cloud Infrastructure"
+  ],
+  "valueLine": "I build and operate AWS infrastructure, deployment pipelines and the automation that keeps production calm.",
+  "location": "Karachi, Pakistan",
+  "email": "symoiz.dev@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/symoiz",
+  "github": "https://github.com/SYMOIZ",
+  "portfolioRepo": "https://github.com/SYMOIZ/syed-moiz-portfolio",
+  "resume": "",
+  "now": "DevOps Engineer, Infrastructure at Keenu, working on infrastructure operations, production systems and service reliability.",
+  "about": [
+    "I am a DevOps and Infrastructure Engineer at Keenu, where I work on infrastructure operations, production systems and reliability.",
+    "Before that I built and maintained cloud infrastructure and deployment pipelines across AWS and Azure as a Cloud Data Engineer at SEBKO Solution, and supported Git workflows, CI/CD and governance on an agentic AI project at Omdena.",
+    "Outside work I build small, honest tools around the problems on-call engineers actually hit: failed queue messages, noisy logs, broken CI runs and risky network paths. Each project below says plainly whether it is a prototype, a hackathon build or a learning exercise."
+  ],
+  "principles": [
+    {
+      "title": "Safe by default",
+      "text": "Dry runs first, explicit flags to mutate, and a human in the loop for anything destructive."
+    },
+    {
+      "title": "Evidence over vibes",
+      "text": "Deterministic checks before AI suggestions, and real metrics instead of made-up numbers."
+    },
+    {
+      "title": "Narrow doors",
+      "text": "Least-privilege IAM, one security group per role, and no SSH from the internet."
+    },
+    {
+      "title": "Cost is a feature",
+      "text": "Pay for the expensive path only when the cheap one is unsure."
+    }
+  ]
+}

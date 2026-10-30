@@ -1,0 +1,44 @@
+{
+  "hero": {
+    "greeting": "Hello, I am",
+    "primaryButton": "View my work",
+    "secondaryButton": "Let's connect",
+    "chaosHint": "This portfolio is on call.",
+    "chaosHintAction": "Try breaking production"
+  },
+  "about": {
+    "kicker": "Who I am",
+    "title": "About me"
+  },
+  "social": {
+    "kicker": "Let's connect",
+    "title": "Find me online"
+  },
+  "certifications": {
+    "kicker": "Credentials and recognition",
+    "title": "Certifications"
+  },
+  "skills": {
+    "kicker": "What I do",
+    "title": "Skills & tech superpowers",
+    "capabilitiesTitle": "Where each capability is proven"
+  },
+  "operate": {
+    "kicker": "How I work",
+    "title": "From commit to calm production"
+  },
+  "experience": {
+    "kicker": "My résumé",
+    "title": "Experience & education"
+  },
+  "projects": {
+    "kicker": "Achievements",
+    "title": "My projects",
+    "lede": "DevOps, reliability and AWS infrastructure work. Every card shows the project's real status."
+  },
+  "contact": {
+    "kicker": "Reach out to me",
+    "title": "Contact",
+    "lede": "Open to conversations about DevOps, platform engineering, cloud infrastructure and reliability."
+  }
+}

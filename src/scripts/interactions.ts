@@ -224,7 +224,7 @@ function initScrollSpy(): void {
       } else a.removeAttribute('aria-current');
     });
     if (!active && location.pathname.startsWith('/projects')) {
-      active = links.find((a) => a.dataset.nav === 'all-projects');
+      active = links.find((a) => a.dataset.nav === 'projects');
       active?.classList.add('is-active');
     }
     moveIndicator(active);

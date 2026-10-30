@@ -18,6 +18,7 @@ import {
   community,
   publications,
   education,
+  sections,
 } from '../data/profile';
 
 const projects = await getPublishedProjects();
@@ -69,7 +70,7 @@ const socials = [
 
     <div class="container hero-center">
       <div class="hero-card glass" data-reveal>
-        <p class="hero-hello">Hello, I am</p>
+        <p class="hero-hello">{sections.hero.greeting}</p>
         <h1 class="hero-name">{first} <span class="accent">{rest.join(' ')}</span></h1>
         <span class="hero-rule" aria-hidden="true"></span>
         <p class="hero-role">
@@ -78,13 +79,13 @@ const socials = [
         </p>
         <p class="hero-value">{profile.valueLine}</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#projects">View my work</a>
+          <a class="btn btn-primary" href="#projects">{sections.hero.primaryButton}</a>
           {profile.resume && <a class="btn btn-outline" href={profile.resume} download>Download CV</a>}
-          <a class="btn btn-outline" href="#contact">Let's connect</a>
+          <a class="btn btn-outline" href="#contact">{sections.hero.secondaryButton}</a>
         </div>
         <button type="button" class="chaos-hint" data-chaos-open>
           <span class="chaos-hint-dot" aria-hidden="true"></span>
-          This portfolio is on call. <strong>Try breaking production</strong> <span class="muted">(simulation)</span>
+          {sections.hero.chaosHint} <strong>{sections.hero.chaosHintAction}</strong> <span class="muted">(simulation)</span>
         </button>
       </div>
     </div>
@@ -99,7 +100,7 @@ const socials = [
   <section class="section" id="about" data-section="about" data-stage="about">
     <div class="container">
       <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
-      <SectionHead kicker="Who I am" title="About me" />
+      <SectionHead kicker={sections.about.kicker} title={sections.about.title} lede={sections.about.lede || undefined} />
       <div class="about-grid">
         <div class="about-photo card lift" data-reveal>
           <Picture src={portrait} formats={['avif', 'webp']} widths={[480, 800]} sizes="(max-width: 900px) 92vw, 420px" alt={`Portrait of ${profile.name}`} class="about-img" />
@@ -123,7 +124,7 @@ const socials = [
   <!-- FIND ME ONLINE -->
   <section class="section section-alt" id="social" data-stage="about">
     <div class="container">
-      <SectionHead kicker="Let's connect" title="Find me online" />
+      <SectionHead kicker={sections.social.kicker} title={sections.social.title} lede={sections.social.lede || undefined} />
       <ul class="social-grid">
         {socials.map((s, i) => (
           <li data-reveal data-i={i}>
@@ -141,7 +142,7 @@ const socials = [
   <!-- CERTIFICATIONS -->
   <section class="section" id="certifications" data-stage="certifications">
     <div class="container">
-      <SectionHead kicker="Credentials and recognition" title="Certifications" />
+      <SectionHead kicker={sections.certifications.kicker} title={sections.certifications.title} lede={sections.certifications.lede || undefined} />
       {certGroups.map((g) => (
         <div class="cert-group">
           <h3 class="cert-group-title" data-reveal>{g.issuer} <span class="cert-count">{g.items.length}</span></h3>
@@ -173,12 +174,12 @@ const socials = [
   <section class="section section-alt" id="skills" data-section="skills" data-stage="skills">
     <div class="container">
       <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
-      <SectionHead kicker="What I do" title="Skills & tech superpowers" />
+      <SectionHead kicker={sections.skills.kicker} title={sections.skills.title} lede={sections.skills.lede || undefined} />
       <ul class="skill-grid">
         {skillGroups.map((g, i) => (
           <li class="card lift skill-card" data-reveal data-i={i}>
             <span class="skill-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="26" height="26"><path d={ICONS[g.name]} /></svg>
+              <svg viewBox="0 0 24 24" width="26" height="26"><path d={ICONS[g.name] ?? ICONS.Systems} /></svg>
             </span>
             <h3>{g.name}</h3>
             <ul class="tag-row tag-row--center">{g.skills.map((s) => <li class="tag">{s}</li>)}</ul>
@@ -186,7 +187,7 @@ const socials = [
         ))}
       </ul>
 
-      <h3 class="sub-head" data-reveal>Where each capability is proven</h3>
+      <h3 class="sub-head" data-reveal>{sections.skills.capabilitiesTitle}</h3>
       <ul class="capability-list" data-reveal>
         {capabilities.map((c) => (
           <li class="capability">
@@ -213,7 +214,7 @@ const socials = [
   <!-- HOW I WORK -->
   <section class="section" id="operate" data-stage="skills">
     <div class="container">
-      <SectionHead kicker="How I work" title="From commit to calm production" />
+      <SectionHead kicker={sections.operate.kicker} title={sections.operate.title} lede={sections.operate.lede || undefined} />
       <div data-reveal><OperateFlow /></div>
     </div>
   </section>
@@ -221,7 +222,7 @@ const socials = [
   <!-- EXPERIENCE & EDUCATION -->
   <section class="section section-alt" id="experience" data-stage="experience">
     <div class="container">
-      <SectionHead kicker="My résumé" title="Experience & education" />
+      <SectionHead kicker={sections.experience.kicker} title={sections.experience.title} lede={sections.experience.lede || undefined} />
       <div class="resume-grid">
         <div>
           <h3 class="resume-col-title" data-reveal>Experience</h3>
@@ -274,7 +275,7 @@ const socials = [
   <section class="section" id="projects" data-section="projects" data-stage="projects">
     <div class="container">
       <div class="degraded-banner" role="note" hidden>⚠ Simulated degradation. This section is part of the active Chaos Mode incident.</div>
-      <SectionHead kicker="Achievements" title="My projects" lede="DevOps, reliability and AWS infrastructure work. Every card shows the project's real status." />
+      <SectionHead kicker={sections.projects.kicker} title={sections.projects.title} lede={sections.projects.lede || undefined} />
       <div class="carousel" data-carousel data-reveal>
         <div class="carousel-track" data-track role="region" aria-label="Featured projects" tabindex="0">
           {carousel.map((p, i) => <div class="carousel-slide"><ProjectCard project={p} index={i} /></div>)}
@@ -300,7 +301,7 @@ const socials = [
   <!-- CONTACT -->
   <section class="section section-alt section-contact" id="contact" data-stage="contact">
     <div class="container">
-      <SectionHead kicker="Reach out to me" title="Contact" lede="Open to conversations about DevOps, platform engineering, cloud infrastructure and reliability." />
+      <SectionHead kicker={sections.contact.kicker} title={sections.contact.title} lede={sections.contact.lede || undefined} />
       <div class="contact-actions" data-reveal>
         <a class="btn btn-primary" href={`mailto:${profile.email}`}>{profile.email}</a>
         <a class="btn btn-outline" href={profile.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn</a>

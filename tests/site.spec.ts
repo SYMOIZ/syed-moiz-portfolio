@@ -8,7 +8,14 @@ const projects = readdirSync(PROJECT_DIR)
   .map((f) => ({ id: f.slice(0, -5), ...JSON.parse(readFileSync(`${PROJECT_DIR}/${f}`, 'utf8')) }));
 const caseStudies = projects.filter((p) => p.caseStudy?.problem);
 
+// On the homepage the menu bar stays hidden over the hero and slides in after scrolling.
+async function showHeader(page: Page) {
+  await page.evaluate(() => window.scrollTo(0, 300));
+  await expect(page.locator('#site-header')).toHaveClass(/is-scrolled/);
+}
+
 async function openChaos(page: Page) {
+  await showHeader(page);
   await page.locator('#chaos-trigger').click();
   await expect(page.locator('#chaos-console')).toBeVisible();
 }
@@ -19,6 +26,7 @@ async function runCommand(page: Page, cmd: string) {
 }
 
 async function openMenuIfCollapsed(page: Page) {
+  await showHeader(page);
   const menu = page.locator('#menu-btn');
   if (await menu.isVisible()) await menu.click();
 }
@@ -63,8 +71,24 @@ test.describe('homepage content', () => {
 
   test('creative feature hint is visible', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#chaos-trigger')).toBeVisible();
     await expect(page.getByRole('button', { name: /try breaking production/i })).toBeVisible();
+    await showHeader(page);
+    await expect(page.locator('#chaos-trigger')).toBeVisible();
+  });
+
+  test('menu bar is hidden over the hero and appears after scrolling', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#site-header')).toHaveCSS('opacity', '0');
+    await showHeader(page);
+    await expect(page.locator('#site-header')).toHaveCSS('opacity', '1');
+    await page.goto('/projects/');
+    await expect(page.locator('#site-header')).toHaveCSS('opacity', '1');
+  });
+
+  test('menu has a single Projects item', async ({ page }) => {
+    await page.goto('/');
+    const labels = await page.locator('#primary-nav a').allTextContents();
+    expect(labels.filter((l) => /projects/i.test(l))).toEqual(['Projects']);
   });
 
   test('no horizontal scroll', async ({ page }) => {
@@ -118,6 +142,7 @@ test.describe('navigation', () => {
   test('theme toggle switches and persists', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await showHeader(page);
     await page.locator('#theme-toggle').click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
     await page.reload();

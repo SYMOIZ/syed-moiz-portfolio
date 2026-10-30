@@ -10,12 +10,11 @@ const links = [
   { href: `${base}#experience`, label: 'Experience', stage: 'experience' },
   { href: `${base}#projects`, label: 'Projects', stage: 'projects' },
   { href: `${base}#contact`, label: 'Contact', stage: 'contact' },
-  { href: '/projects/', label: 'All projects', stage: 'all-projects' },
 ];
 const [first, ...rest] = profile.name.split(' ');
 ---
 
-<header class="site-header" id="site-header">
+<header class:list={['site-header', !base && 'site-header--reveal']} id="site-header">
   <div class="container header-inner">
     <a class="brand" href={`${base}#top`}>{first}<span class="brand-accent">{rest.join(' ')}</span></a>
 
